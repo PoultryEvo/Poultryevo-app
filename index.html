@@ -1,0 +1,2795 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PoultryRevolution — Reproducteurs Hubbard Efficiency Plus</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1A1208;
+  --or: #C8922A;
+  --or2: #E8B050;
+  --vert: #2D6A4F;
+  --vert2: #40916C;
+  --creme: #FBF6EE;
+  --sable: #F0E6D3;
+  --rouge: #B5322A;
+  --gris: #7A6E60;
+  --blanc: #FFFFFF;
+  --card: rgba(255,255,255,0.85);
+  --border: rgba(200,146,42,0.18);
+  --shadow: 0 4px 24px rgba(26,18,8,0.10);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--creme);color:var(--ink);min-height:100vh;overflow-x:hidden}
+
+/* BG */
+body::before{content:'';position:fixed;inset:0;background:
+  radial-gradient(ellipse 70% 50% at 10% 0%,rgba(200,146,42,0.07) 0%,transparent 60%),
+  radial-gradient(ellipse 50% 40% at 90% 90%,rgba(45,106,79,0.06) 0%,transparent 55%);
+  pointer-events:none;z-index:0}
+
+/* HEADER */
+header{position:sticky;top:0;z-index:200;background:var(--ink);border-bottom:2px solid var(--or);display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;height:62px;box-shadow:0 4px 20px rgba(26,18,8,0.25)}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-icon{font-size:1.6rem}
+.brand-name{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;color:var(--or);letter-spacing:0.5px}
+.brand-sub{font-size:0.6rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.4);display:block;margin-top:-3px}
+.header-info{text-align:right;font-size:0.72rem;color:rgba(255,255,255,0.5);font-family:'JetBrains Mono',monospace}
+.header-info strong{color:var(--or2);font-size:0.78rem;display:block}
+
+/* LAYOUT */
+.wrap{position:relative;z-index:1;display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 62px)}
+
+/* SIDEBAR */
+.sidebar{background:#211708;padding:1.2rem 0.75rem;position:sticky;top:62px;height:calc(100vh - 62px);overflow-y:auto;border-right:1px solid rgba(200,146,42,0.15)}
+.sidebar-section-label{font-size:0.58rem;letter-spacing:3.5px;text-transform:uppercase;color:rgba(255,255,255,0.22);padding:0.3rem 0.5rem 0.2rem;margin-top:0.6rem}
+.nav-btn{display:flex;align-items:center;gap:9px;width:100%;padding:0.6rem 0.75rem;background:transparent;border:none;border-radius:8px;color:rgba(255,255,255,0.55);font-family:'Outfit',sans-serif;font-size:0.82rem;font-weight:500;cursor:pointer;transition:all 0.18s;text-align:left;position:relative}
+.nav-btn:hover{background:rgba(200,146,42,0.1);color:var(--or2)}
+.nav-btn.active{background:var(--or);color:var(--ink);font-weight:700}
+.nav-btn .ni{font-size:1rem;width:20px;text-align:center}
+.nav-dot{width:6px;height:6px;border-radius:50%;background:var(--rouge);margin-left:auto;flex-shrink:0}
+
+/* LOT INFO CARD */
+.lot-card{background:rgba(200,146,42,0.12);border:1px solid rgba(200,146,42,0.3);border-radius:10px;padding:0.85rem;margin:0.5rem 0 0.75rem;font-size:0.75rem;color:rgba(255,255,255,0.7)}
+.lot-card strong{color:var(--or2);display:block;font-size:0.78rem;margin-bottom:4px;font-family:'Cormorant Garamond',serif;font-size:0.95rem}
+.lot-row{display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px solid rgba(200,146,42,0.1)}
+.lot-row:last-child{border-bottom:none}
+
+/* CONTENT */
+.content{padding:1.75rem;overflow-y:auto}
+.page{display:none;animation:fadeIn 0.28s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* PAGE HEADER */
+.page-hd{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:0.75rem;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1.5px solid var(--border)}
+.page-title{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;line-height:1;color:var(--ink)}
+.page-sub{color:var(--gris);font-size:0.8rem;margin-top:3px}
+
+/* CARDS */
+.card{background:var(--card);border-radius:14px;padding:1.25rem;border:1px solid var(--border);box-shadow:var(--shadow);margin-bottom:1.25rem;backdrop-filter:blur(4px)}
+.card-h{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:7px;color:var(--ink)}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1rem;margin-bottom:1.25rem}
+.stat{background:var(--card);border-radius:12px;padding:1.1rem 1.2rem;border:1px solid var(--border);box-shadow:var(--shadow);position:relative;overflow:hidden;transition:transform 0.2s}
+.stat:hover{transform:translateY(-2px)}
+.stat::after{content:'';position:absolute;top:0;right:0;width:60px;height:60px;border-radius:0 0 0 60px;opacity:0.07}
+.stat.s-or::after{background:var(--or)}
+.stat.s-vert::after{background:var(--vert)}
+.stat.s-rouge::after{background:var(--rouge)}
+.stat.s-ink::after{background:var(--ink)}
+.stat-icon{font-size:1.4rem;margin-bottom:0.5rem}
+.stat-val{font-family:'Cormorant Garamond',serif;font-size:2.1rem;font-weight:700;line-height:1;color:var(--ink)}
+.stat-lbl{font-size:0.7rem;text-transform:uppercase;letter-spacing:1.2px;color:var(--gris);margin-top:3px}
+.stat-trend{font-size:0.72rem;margin-top:5px;font-weight:500}
+.t-up{color:var(--vert2)} .t-dn{color:var(--rouge)} .t-neu{color:var(--or)}
+
+/* TABLES */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:0.82rem}
+thead th{background:var(--ink);color:var(--or2);font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;padding:0.65rem 0.85rem;text-align:left;font-weight:500}
+thead th:first-child{border-radius:7px 0 0 7px}
+thead th:last-child{border-radius:0 7px 7px 0}
+tbody tr{border-bottom:1px solid rgba(200,146,42,0.08);transition:background 0.12s}
+tbody tr:hover{background:rgba(200,146,42,0.04)}
+tbody td{padding:0.72rem 0.85rem;color:var(--ink);vertical-align:middle}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;padding:0.22rem 0.55rem;border-radius:20px;font-size:0.68rem;font-weight:600;letter-spacing:0.3px}
+.b-g{background:rgba(45,106,79,0.1);color:var(--vert)}
+.b-o{background:rgba(200,146,42,0.15);color:#8B5E10}
+.b-r{background:rgba(181,50,42,0.1);color:var(--rouge)}
+.b-gr{background:rgba(122,110,96,0.1);color:var(--gris)}
+.b-bl{background:rgba(30,80,160,0.1);color:#1E50A0}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:5px;padding:0.52rem 1rem;border-radius:8px;font-family:'Outfit',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;border:none;transition:all 0.18s}
+.btn-p{background:var(--or);color:var(--ink);box-shadow:0 3px 10px rgba(200,146,42,0.3)}
+.btn-p:hover{background:var(--or2);transform:translateY(-1px)}
+.btn-o{background:transparent;color:var(--ink);border:1.5px solid var(--or)}
+.btn-o:hover{background:rgba(200,146,42,0.08)}
+.btn-d{background:rgba(181,50,42,0.08);color:var(--rouge);border:1.5px solid rgba(181,50,42,0.25)}
+.btn-d:hover{background:rgba(181,50,42,0.15)}
+
+/* ALERT */
+.alert{padding:0.8rem 1rem;border-radius:10px;font-size:0.82rem;display:flex;align-items:flex-start;gap:9px;margin-bottom:1rem}
+.alert-w{background:rgba(200,146,42,0.1);border-left:4px solid var(--or);color:#7A5010}
+.alert-d{background:rgba(181,50,42,0.08);border-left:4px solid var(--rouge);color:var(--rouge)}
+.alert-s{background:rgba(45,106,79,0.09);border-left:4px solid var(--vert);color:var(--vert)}
+.alert-i{background:rgba(30,80,160,0.08);border-left:4px solid #1E50A0;color:#1E50A0}
+
+/* FORM */
+.fg{display:flex;flex-direction:column;gap:0.35rem}
+.fl{font-size:0.7rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gris)}
+.fi,.fs{padding:0.58rem 0.8rem;border:1.5px solid var(--border);border-radius:8px;font-family:'Outfit',sans-serif;font-size:0.82rem;background:var(--creme);color:var(--ink);outline:none;transition:border-color 0.18s}
+.fi:focus,.fs:focus{border-color:var(--or);box-shadow:0 0 0 3px rgba(200,146,42,0.12)}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0.85rem}
+.factions{display:flex;gap:0.6rem;justify-content:flex-end;margin-top:1rem}
+
+/* PROGRESS */
+.pbar{background:rgba(200,146,42,0.12);border-radius:99px;height:7px;overflow:hidden;margin-top:4px}
+.pfill{height:100%;border-radius:99px;transition:width 0.8s cubic-bezier(.34,1.56,.64,1)}
+
+/* MODAL */
+.modal-ov{position:fixed;inset:0;background:rgba(26,18,8,0.55);backdrop-filter:blur(3px);z-index:500;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity 0.22s}
+.modal-ov.open{opacity:1;pointer-events:auto}
+.modal{background:var(--blanc);border-radius:16px;padding:1.75rem;width:100%;max-width:540px;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(26,18,8,0.28);transform:scale(0.95);transition:transform 0.22s}
+.modal-ov.open .modal{transform:scale(1)}
+.modal-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem}
+.modal-title{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:700}
+.modal-x{background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--gris);transition:color 0.15s;padding:0.2rem}
+.modal-x:hover{color:var(--rouge)}
+
+/* TWO COL */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+/* THREE COL */
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+
+/* WEEK PROGRESS */
+.week-block{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:0.9rem;margin-bottom:0.5rem}
+.week-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-size:0.82rem;font-weight:600}
+.week-sub{font-size:0.72rem;color:var(--gris)}
+
+/* VACC STATUS */
+.vacc-row{display:flex;align-items:center;gap:10px;padding:0.65rem 0;border-bottom:1px solid var(--border);font-size:0.82rem}
+.vacc-row:last-child{border-bottom:none}
+.vacc-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.v-done{background:var(--vert2)}
+.v-soon{background:var(--or)}
+.v-urgent{background:var(--rouge)}
+.v-upcoming{background:var(--gris)}
+
+/* TIMELINE */
+.tl{position:relative;padding-left:1.75rem}
+.tl::before{content:'';position:absolute;left:6px;top:4px;bottom:4px;width:2px;background:var(--border)}
+.tl-item{position:relative;padding-bottom:1.1rem}
+.tl-item::before{content:'';position:absolute;left:-1.42rem;top:4px;width:10px;height:10px;border-radius:50%;background:var(--or);border:2px solid var(--blanc);box-shadow:0 0 0 2px var(--or)}
+.tl-date{font-size:0.68rem;color:var(--gris);font-family:'JetBrains Mono',monospace;margin-bottom:2px}
+.tl-text{font-size:0.82rem;font-weight:600;color:var(--ink)}
+.tl-note{font-size:0.76rem;color:var(--gris)}
+
+/* TOAST */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--ink);color:var(--blanc);padding:0.9rem 1.4rem;border-radius:10px;border-left:4px solid var(--or);font-size:0.82rem;font-weight:500;z-index:999;transform:translateY(100px);opacity:0;transition:all 0.28s;max-width:300px}
+.sync-status{font-size:0.68rem;font-weight:600;letter-spacing:0.3px;padding:0.15rem 0.5rem;border-radius:12px;transition:all 0.2s}
+.sync-ok{color:var(--vert);background:rgba(45,106,79,0.1)}
+.sync-err{color:var(--rouge);background:rgba(181,50,42,0.1)}
+.sync-neu{color:var(--gris);background:rgba(122,110,96,0.08)}
+
+/* RÔLES / CONNEXION */
+.role-badge{font-size:0.68rem;font-weight:700;letter-spacing:0.3px;padding:0.25rem 0.65rem;border-radius:14px;background:var(--vert);color:#fff;cursor:pointer;transition:opacity 0.2s}
+.role-badge:hover{opacity:0.8}
+.login-ov{position:fixed;inset:0;background:linear-gradient(135deg,var(--vert) 0%,var(--ink) 100%);display:flex;align-items:center;justify-content:center;z-index:2000}
+.login-ov.hidden{display:none}
+.login-box{background:#fff;border-radius:18px;padding:2.2rem 2rem;max-width:380px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+.login-icon{font-size:2.8rem;margin-bottom:0.4rem}
+.login-title{font-size:1.4rem;font-weight:800;color:var(--vert)}
+.login-sub{font-size:0.82rem;color:var(--gris);margin-top:0.3rem;margin-bottom:1.3rem}
+.login-profiles{display:grid;gap:0.6rem}
+.login-profile-btn{display:flex;align-items:center;gap:0.7rem;padding:0.75rem 1rem;border-radius:11px;border:1.5px solid rgba(0,0,0,0.08);background:var(--sable);cursor:pointer;transition:all 0.18s;text-align:left;font-family:inherit}
+.login-profile-btn:hover{border-color:var(--vert);background:rgba(45,106,79,0.06)}
+.login-profile-icon{font-size:1.4rem}
+.login-profile-name{font-weight:700;font-size:0.88rem;color:var(--ink)}
+.login-profile-role{font-size:0.7rem;color:var(--gris)}
+.toast.show{transform:translateY(0);opacity:1}
+
+/* NUTRITION TABLE */
+.nutri-phase{background:var(--ink);color:var(--or2);font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;padding:0.4rem 0.85rem;border-radius:6px 6px 0 0;display:inline-block}
+
+/* RESPONSIVE */
+@media(max-width:860px){.wrap{grid-template-columns:1fr}.sidebar{position:relative;top:0;height:auto;display:flex;flex-wrap:wrap;padding:0.5rem;gap:0.3rem}.sidebar-section-label{display:none}.lot-card{display:none}.nav-btn{padding:0.45rem 0.7rem;font-size:0.75rem}.content{padding:1rem}.two{grid-template-columns:1fr}.three{grid-template-columns:1fr 1fr}}
+</style>
+<!-- Firebase SDK (version compat, sans build nécessaire) -->
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js"></script>
+</head>
+<body>
+
+<!-- ============ ÉCRAN DE CONNEXION ============ -->
+<div class="login-ov" id="login-screen">
+  <div class="login-box">
+    <div class="login-icon">🐓</div>
+    <div class="login-title">PoultryRevolution</div>
+    <div class="login-sub">Connectez-vous pour accéder à l'application</div>
+    <div class="fg" style="margin-top:0.5rem"><label class="fl">Email</label><input class="fi" type="email" id="login-email" placeholder="prenom@poultryevo.cm" autocomplete="username"></div>
+    <div class="fg" style="margin-top:0.6rem"><label class="fl">Mot de passe</label><input class="fi" type="password" id="login-password" placeholder="••••••••" autocomplete="current-password"></div>
+    <button class="btn btn-p" id="login-submit-btn" style="width:100%;margin-top:0.9rem" onclick="validerConnexion()">✓ Se connecter</button>
+    <div id="login-error" style="color:var(--rouge);font-size:0.78rem;margin-top:0.6rem;text-align:center;display:none"></div>
+    <div style="font-size:0.7rem;color:var(--gris);margin-top:0.9rem;text-align:center">Connexion sécurisée — fonctionne aussi hors-ligne une fois connecté une première fois</div>
+  </div>
+</div>
+
+<header>
+  <div class="brand">
+    <span class="brand-icon">🐓</span>
+    <div>
+      <span class="brand-name">PoultryRevolution</span>
+      <span class="brand-sub">Reproducteurs Hubbard Efficiency Plus · Obala</span>
+    </div>
+  </div>
+  <div class="header-info">
+    <strong id="hDate">—</strong>
+    <span>Obala · Lékié · Centre, Cameroun</span>
+    <span id="sync-status" class="sync-status"></span>
+    <span id="role-badge" class="role-badge" onclick="deconnexion()" title="Cliquer pour changer de profil"></span>
+  </div>
+</header>
+
+<div class="wrap">
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="lot-card">
+    <strong>🐣 Lot Actuel — HEP-2026</strong>
+    <div class="lot-row"><span>Arrivée</span><span>19/03/2026</span></div>
+    <div class="lot-row"><span>♀ Femelles</span><span style="color:var(--or2);font-weight:600">660</span></div>
+    <div class="lot-row"><span>♂ Mâles</span><span style="color:var(--or2);font-weight:600">91</span></div>
+    <div class="lot-row"><span>Âge</span><span id="sidebar-age">—</span></div>
+    <div class="lot-row"><span>Phase</span><span id="sidebar-phase" style="color:var(--or2)">—</span></div>
+  </div>
+
+  <div class="sidebar-section-label">Vue Générale</div>
+  <button class="nav-btn active" onclick="showPage('dashboard',this)"><span class="ni">📊</span> Tableau de Bord</button>
+  <button class="nav-btn" onclick="showPage('lot',this)"><span class="ni">🐔</span> Mon Lot</button>
+
+  <div class="sidebar-section-label">Suivi Technique</div>
+  <button class="nav-btn" onclick="showPage('poids',this)"><span class="ni">⚖️</span> Poids & Croissance</button>
+  <button class="nav-btn" onclick="showPage('oeufs',this)"><span class="ni">🥚</span> Production Œufs</button>
+  <button class="nav-btn" onclick="showPage('incubation',this)"><span class="ni">🔆</span> Couvoir</button>
+  <button class="nav-btn" onclick="showPage('engraissement',this)"><span class="ni">🍗</span> Engraissement</button>
+
+  <div class="sidebar-section-label">Gestion</div>
+  <button class="nav-btn" onclick="showPage('nutrition',this)"><span class="ni">🌾</span> Nutrition Hubbard</button>
+  <button class="nav-btn" onclick="showPage('vaccin',this)"><span class="ni">💉</span> Programme Vaccinal <span class="nav-dot"></span></button>
+  <button class="nav-btn" onclick="showPage('biosec',this)"><span class="ni">🛡️</span> Biosécurité</button>
+  <button class="nav-btn" onclick="showPage('sante',this)"><span class="ni">🏥</span> Santé & Traitements</button>
+  <button class="nav-btn" onclick="showPage('mortalite',this)"><span class="ni">📉</span> Mortalité</button>
+
+  <div class="sidebar-section-label">Finances</div>
+  <button class="nav-btn" onclick="showPage('ventes',this)"><span class="ni">🧾</span> Ventes (Consolidé)</button>
+  <button class="nav-btn" onclick="showPage('finance',this)"><span class="ni">💰</span> Finances</button>
+  <button class="nav-btn" onclick="showPage('rapports',this)"><span class="ni">📋</span> Rapports</button>
+</nav>
+
+<!-- CONTENT -->
+<main class="content">
+
+<!-- ============ DASHBOARD ============ -->
+<div class="page active" id="page-dashboard">
+  <div class="page-hd">
+    <div>
+      <div class="page-title">🌅 Tableau de Bord</div>
+      <div class="page-sub">Lot HEP-2026 · Hubbard Efficiency Plus · Arrivée 19 Mars 2026</div>
+    </div>
+    <div style="display:flex;gap:0.5rem">
+      <button class="btn btn-o" onclick="showPage('vaccin',document.querySelector('.nav-btn:nth-child(9)'))">💉 Vaccins</button>
+      <button class="btn btn-p" onclick="showPage('oeufs',document.querySelector('.nav-btn:nth-child(8)'))">+ Collecte</button>
+    </div>
+  </div>
+
+  <div class="alert alert-w">⚠️ <span><strong>Rappel vaccinal urgent :</strong> Newcastle (ND) LaSota rappel — prévu dans les prochains jours selon programme FETAGHIS. Vérifier les stocks vaccins.</span></div>
+  <div class="alert alert-i">ℹ️ <span><strong>Phase actuelle (Semaine 5-6) :</strong> Poussinière — Focus calibrage du lot, vaccin Variole aviaire (transfixion alaire) et rappel Gumboro. Objectif poids S6 : <strong>785 g</strong> (bâtiment ouvert).</span></div>
+
+  <!-- ════════ VUE GLOBALE MULTI-MODULES (admin) ════════ -->
+  <div class="card" id="vue-globale-card">
+    <div class="card-h">🌐 Vue Globale — Tous Modules</div>
+    <div class="stats" id="vue-globale-blocs"></div>
+  </div>
+
+  <div class="two">
+    <div class="card">
+      <div class="card-h">🚨 Alertes Actives — Toutes Confondues</div>
+      <div id="alertes-globales-list"></div>
+    </div>
+    <div class="card">
+      <div class="card-h">💹 Rentabilité Globale</div>
+      <div id="rentabilite-globale-resume"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-h">🔍 Recherche Rapide par Code de Lot</div>
+    <div class="fgrid" style="margin-bottom:0.5rem">
+      <div class="fg" style="grid-column:1/-1"><input class="fi" type="text" id="recherche-lot-dashboard" placeholder="Ex: TR-260319-01, ENG-260712-01..." oninput="rechercherLotDashboard()"></div>
+    </div>
+    <div id="recherche-lot-dashboard-resultat"></div>
+  </div>
+  <!-- ════════ FIN VUE GLOBALE ════════ -->
+
+  <div class="stats">
+    <div class="stat s-or">
+      <div class="stat-icon">🐔</div>
+      <div class="stat-val" id="d-total">751</div>
+      <div class="stat-lbl">Effectif Total</div>
+      <div class="stat-trend t-neu">660♀ + 91♂ (8,5% ratio)</div>
+    </div>
+    <div class="stat s-vert">
+      <div class="stat-icon">⚖️</div>
+      <div class="stat-val" id="d-poids">~795g</div>
+      <div class="stat-lbl">Poids Cible Semaine 6</div>
+      <div class="stat-trend t-up">▲ Conditions difficiles HEP</div>
+    </div>
+    <div class="stat s-ink">
+      <div class="stat-icon">💰</div>
+      <div class="stat-val">4,62M</div>
+      <div class="stat-lbl">Coût Pulcini (FCFA)</div>
+      <div class="stat-trend t-neu">660 × 7 000 FCFA</div>
+    </div>
+    <div class="stat s-rouge">
+      <div class="stat-icon">📅</div>
+      <div class="stat-val" id="d-age">J?</div>
+      <div class="stat-lbl">Âge du Lot</div>
+      <div class="stat-trend t-neu" id="d-semaine">S?</div>
+    </div>
+  </div>
+
+  <div class="two">
+    <div class="card">
+      <div class="card-h">📈 Objectifs Poids Hubbard — Prochaines Semaines</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Semaine</th><th>Jours</th><th>Obj. Poids (g)</th><th>Ration (g/j)</th><th>Aliment</th></tr></thead>
+          <tbody>
+            <tr><td style="font-weight:700">S5</td><td>35</td><td>685</td><td>46</td><td><span class="badge b-gr">Croissance</span></td></tr>
+            <tr><td style="font-weight:700">S6</td><td>42</td><td>795</td><td>49</td><td><span class="badge b-gr">Croissance</span></td></tr>
+            <tr><td style="font-weight:700">S7</td><td>49</td><td>900</td><td>52</td><td><span class="badge b-gr">Croissance</span></td></tr>
+            <tr><td style="font-weight:700">S8</td><td>56</td><td>1 005</td><td>54</td><td><span class="badge b-gr">Croissance</span></td></tr>
+            <tr><td style="font-weight:700">S10</td><td>70</td><td>1 190</td><td>59</td><td><span class="badge b-gr">Croissance</span></td></tr>
+            <tr><td style="font-weight:700">S18</td><td>126</td><td>2 115</td><td>91</td><td><span class="badge b-o">Transition</span></td></tr>
+            <tr><td style="font-weight:700">S22</td><td>154</td><td>2 725</td><td>116</td><td><span class="badge b-o">Transition</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="font-size:0.7rem;color:var(--gris);margin-top:0.5rem">📌 Conditions difficiles / Bâtiment ouvert hors-saison (Hubbard HEP)</div>
+    </div>
+    <div class="card">
+      <div class="card-h">💉 Prochaines Actions Sanitaires</div>
+      <div id="prochain-vaccin"></div>
+    </div>
+  </div>
+
+  <div class="two">
+    <div class="card">
+      <div class="card-h">🌡️ Conditions & Suivi Poussinière</div>
+      <div style="display:grid;gap:0.8rem">
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:3px"><span>Programme lumineux actuel (S5-6)</span><span style="font-weight:600;color:var(--vert)">8h · 5-10 lux</span></div>
+          <div class="pbar"><div class="pfill" style="width:33%;background:linear-gradient(90deg,var(--or2),var(--or))"></div></div>
+          <div style="font-size:0.68rem;color:var(--gris)">Objectif bâtiment obscur : 8h constant jusqu'à J154</div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:3px"><span>Température ambiante cible</span><span style="font-weight:600;color:var(--vert)">25-26°C</span></div>
+          <div class="pbar"><div class="pfill" style="width:70%;background:linear-gradient(90deg,#4A90D9,#2D6A7A)"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:3px"><span>Densité bâtiment</span><span style="font-weight:600;color:var(--or)">6 sujets/m²</span></div>
+          <div class="pbar"><div class="pfill" style="width:100%;background:var(--or)"></div></div>
+          <div style="font-size:0.68rem;color:var(--gris)">Surface minimale requise : 126 m² (751 sujets)</div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:0.8rem;margin-bottom:3px"><span>Stock aliment croissance estimé</span><span style="font-weight:600;color:var(--rouge)">⚠️ Vérifier</span></div>
+          <div class="pbar"><div class="pfill" style="width:40%;background:var(--rouge)"></div></div>
+          <div style="font-size:0.68rem;color:var(--gris)">Conso. : 660 × 49g + 91 × 52g = ~37 kg/jour</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-h">💰 Résumé Financier Initial</div>
+      <div style="display:grid;gap:0.6rem;font-size:0.82rem">
+        <div style="padding:0.7rem;background:rgba(181,50,42,0.07);border-radius:9px;display:flex;justify-content:space-between">
+          <span>660 Poulettes × 7 000 FCFA</span><span style="font-weight:700;color:var(--rouge)">− 4 620 000</span>
+        </div>
+        <div style="padding:0.7rem;background:rgba(45,106,79,0.07);border-radius:9px;display:flex;justify-content:space-between">
+          <span>91 Coquelets Hubbard M77</span><span style="font-weight:700;color:var(--vert)">Offerts (0 FCFA)</span>
+        </div>
+        <div style="padding:0.7rem;background:rgba(200,146,42,0.08);border-radius:9px;display:flex;justify-content:space-between">
+          <span>Source (Ferme Moderne du Sud)</span><span style="font-weight:600;color:var(--or)">HUBBARD S.A.S.</span>
+        </div>
+        <div style="padding:0.7rem;background:rgba(200,146,42,0.12);border-radius:9px;border:1.5px solid var(--or);display:flex;justify-content:space-between">
+          <span style="font-weight:600">Coût Initial Animaux</span><span style="font-weight:800;color:var(--ink)">4 620 000 FCFA</span>
+        </div>
+        <div style="font-size:0.72rem;color:var(--gris);padding:0 0.2rem">Coût unitaire/poulette : 7 000 FCFA — Mâles fournis gracieusement par Hubbard (+4% FOC)</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ LOT ============ -->
+<div class="page" id="page-lot">
+  <div class="page-hd">
+    <div><div class="page-title">🐔 Mon Lot — HEP-2026</div><div class="page-sub">Fiche complète du troupeau reproducteur</div></div>
+  </div>
+  <div class="two">
+    <div class="card">
+      <div class="card-h">📋 Identification du Lot</div>
+      <div style="display:grid;gap:0.5rem;font-size:0.83rem">
+        <div style="display:flex;justify-content:space-between;padding:0.5rem;background:var(--sable);border-radius:7px"><span>Entreprise</span><span style="font-weight:700">PoultryRevolution</span></div>
+        <div style="display:flex;justify-content:space-between;padding:0.5rem;background:var(--sable);border-radius:7px"><span>Localité</span><span style="font-weight:700">Obala, Lékié, Centre</span></div>
+        <div style="display:flex;justify-content:space-between;padding:0.5rem;background:var(--sable);border-radius:7px"><span>Référence Lot</span><span style="font-weight:700">HEP-2026</span></div>
+        <div style="display:flex;justify-content:space-between;padding:0.5rem;background:var(--sable);border-radius:7px"><span>Race Femelles</span><span style="font-weight:700">Hubbard Efficiency Plus</span></div>
+        <div style="display:flex;justify-content:space-between;padding:0.5rem;background:var(--sable);border-radius:7px"><span>Race Mâles</span><span style="font-weight:700">Hubbard M77 Conventionnel</span></div>
+        <div style="display:flex;justify-content:space-between;padding:0.5rem;background:var(--sable);border-radius:7px"><span>Date d'Arrivée</span><span style="font-weight:700">19 Mars 2026</span></div>
+        <div style="display:flex;justify-content:space-between;padding:0.5rem;background:var(--sable);border-radius:7px"><span>Date d'Éclosion</span><span style="font-weight:700">18 Mars 2026 (J0)</span></div>
+        <div style="display:flex;justify-content:space-between;padding:0.5rem;background:rgba(200,146,42,0.1);border-radius:7px;border:1px solid var(--border)"><span>Fournisseur</span><span style="font-weight:700">Hubbard S.A.S. via Ferme Moderne du Sud — LTAN 057-48485555</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-h">👥 Effectif & Ratio</div>
+      <div style="display:grid;gap:0.5rem">
+        <div style="background:linear-gradient(135deg,rgba(200,146,42,0.1),rgba(200,146,42,0.05));border:1px solid var(--border);border-radius:10px;padding:1rem;text-align:center">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:700;color:var(--ink)">660</div>
+          <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--gris)">Poulettes Reproductrice ♀</div>
+          <div style="font-size:0.78rem;color:var(--or);margin-top:4px">7 000 FCFA/unité = 4 620 000 FCFA</div>
+        </div>
+        <div style="background:linear-gradient(135deg,rgba(45,106,79,0.1),rgba(45,106,79,0.05));border:1px solid rgba(45,106,79,0.2);border-radius:10px;padding:1rem;text-align:center">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:700;color:var(--vert)">91</div>
+          <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--gris)">Coquelets Reproducteurs ♂ (M77)</div>
+          <div style="font-size:0.78rem;color:var(--vert2);margin-top:4px">Offerts — 0 FCFA (Hubbard +4% FOC)</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem">
+          <div style="background:var(--sable);border-radius:8px;padding:0.75rem;text-align:center">
+            <div style="font-size:1.3rem;font-weight:700">751</div>
+            <div style="font-size:0.68rem;color:var(--gris)">Effectif Total</div>
+          </div>
+          <div style="background:var(--sable);border-radius:8px;padding:0.75rem;text-align:center">
+            <div style="font-size:1.3rem;font-weight:700">12.1%</div>
+            <div style="font-size:0.68rem;color:var(--gris)">Ratio ♂/♀</div>
+          </div>
+        </div>
+        <div class="alert alert-w" style="margin-bottom:0">⚠️ Ratio ♂/♀ actuel : 13,8% (91/660). Recommandation Hubbard : mélanger 8,5% mâles à 25 semaines. Prévoir sélection/réforme des mâles excédentaires à partir de S20.</div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-h">📅 Calendrier du Lot (0 → 64 semaines)</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Phase</th><th>Âge</th><th>Dates (approx.)</th><th>Objectif Principal</th><th>Statut</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:700">Poussinière</td><td>J0 → S22</td><td>19/03 → 19/08/2026</td><td>Atteindre 2 665g à S22, uniformité >85%</td><td id="phase-stat-1"><span class="badge b-o">▶ En cours</span></td></tr>
+          <tr><td style="font-weight:700">Transition</td><td>S18 → S22</td><td>Juil. → Août 2026</td><td>Préparer entrée en ponte, aliment transition</td><td><span class="badge b-gr">À venir</span></td></tr>
+          <tr><td style="font-weight:700">Stimulation</td><td>S22 (J154)</td><td>~19/08/2026</td><td>1ère stimulation lumineuse (+4h)</td><td><span class="badge b-gr">À venir</span></td></tr>
+          <tr><td style="font-weight:700">Montée ponte</td><td>S25 → S30</td><td>Sept. → Oct. 2026</td><td>Atteindre pic >85% de ponte</td><td><span class="badge b-gr">À venir</span></td></tr>
+          <tr><td style="font-weight:700">Production</td><td>S25 → S65</td><td>Sept. 2026 → Mai 2027</td><td>152 poussins/♀ logée cumulés</td><td><span class="badge b-gr">À venir</span></td></tr>
+          <tr><td style="font-weight:700">Réforme</td><td>~S65</td><td>~Mai/Juin 2027</td><td>Fin de lot, vide sanitaire 3 semaines min.</td><td><span class="badge b-gr">À venir</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ============ POIDS ============ -->
+<div class="page" id="page-poids">
+  <div class="page-hd">
+    <div><div class="page-title">⚖️ Poids & Croissance</div><div class="page-sub">Suivi hebdomadaire vs objectifs Hubbard HEP</div></div>
+    <button class="btn btn-p" onclick="openModal('m-pesee')">+ Enregistrer Pesée</button>
+  </div>
+  <div class="alert alert-i">ℹ️ <span>Pesée hebdomadaire recommandée : <strong>3-5% de l'effectif, minimum 100 sujets par parc</strong>, idéalement le jour d'éclosion (mercredi), avant alimentation. Utiliser 3 points d'échantillonnage différents.</span></div>
+  <div class="card">
+    <div class="card-h">📊 Objectifs Poids Vif — Hubbard HEP (Conditions Difficiles / Bâtiment Ouvert)</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Semaine</th><th>Jours</th><th>Obj. Poids (g)</th><th>Croissance/sem (g)</th><th>Ration (g/j)</th><th>EM (kcal/j)</th><th>Aliment</th><th>Poids Réel</th></tr></thead>
+        <tbody id="poids-table"></tbody>
+      </table>
+    </div>
+  </div>
+  <div class="two">
+    <div class="card">
+      <div class="card-h">📝 Dernières Pesées Enregistrées</div>
+      <div id="pesees-list">
+        <div style="color:var(--gris);font-size:0.82rem;padding:1rem;text-align:center">Aucune pesée enregistrée. Cliquez sur "+ Enregistrer Pesée" pour commencer.</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-h">🎯 Calibrage du Lot</div>
+      <div style="font-size:0.82rem;line-height:1.7;color:var(--ink)">
+        <p style="margin-bottom:0.75rem"><strong>Objectif uniformité :</strong> ≥ 85% (CV &lt; 7,5%)</p>
+        <div class="alert alert-w" style="margin-bottom:0.75rem">⚠️ <span><strong>Calibrage S3-4 (8-28 Avr) :</strong> Isoler les plus petits dès J7. Calibrer 100% du lot à S3-4. Créer groupes par poids.</span></div>
+        <div class="alert alert-w" style="margin-bottom:0.75rem">⚠️ <span><strong>Recalibrage S12-14 :</strong> Si uniformité &lt; 80% (CV &gt; 8%), recalibrer impérativement avant la stimulation lumineuse.</span></div>
+        <p><strong>Méthode Hubbard :</strong> L'uniformité = % de sujets dont le poids est dans l'intervalle ±10% du poids moyen du lot.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ OEUFS ============ -->
+<div class="page" id="page-oeufs">
+  <div class="page-hd">
+    <div><div class="page-title">🥚 Production d'Œufs</div><div class="page-sub">Collecte et taux de ponte — Phase productive dès S25 (~Sept 2026)</div></div>
+    <button class="btn btn-p" onclick="openModal('m-oeuf')">+ Enregistrer Collecte</button>
+  </div>
+  <div class="alert alert-i">ℹ️ <span><strong>Début de ponte estimé :</strong> ~Semaine 25 (3ème semaine de Septembre 2026), soit 2-3 semaines après stimulation lumineuse (J154 = ~19 Août 2026). Objectif : 5% ponte hebdomadaire à S25.</span></div>
+  <div class="stats">
+    <div class="stat s-or"><div class="stat-icon">🥚</div><div class="stat-val">0</div><div class="stat-lbl">Œufs Aujourd'hui</div><div class="stat-trend t-neu">Phase poussinière</div></div>
+    <div class="stat s-vert"><div class="stat-icon">📦</div><div class="stat-val">152</div><div class="stat-lbl">Obj. Poussins/♀ (total)</div><div class="stat-trend t-up">Objectif Hubbard HEP</div></div>
+    <div class="stat s-ink"><div class="stat-icon">📊</div><div class="stat-val">88%</div><div class="stat-lbl">Pic Ponte Objectif</div><div class="stat-trend t-up">Semaines 31-35</div></div>
+    <div class="stat s-rouge"><div class="stat-icon">🐣</div><div class="stat-val">82%</div><div class="stat-lbl">Taux Éclosion Objectif</div><div class="stat-trend t-up">Hubbard HEP std</div></div>
+  </div>
+  <div class="two">
+    <div class="card">
+      <div class="card-h">📋 Objectifs de Production Hubbard HEP</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Sem.</th><th>Prod.</th><th>Œufs/sem</th><th>OAC/sem</th><th>Éclosion%</th><th>Poussins</th></tr></thead>
+          <tbody>
+            <tr><td>25</td><td>23.3%</td><td>1.6</td><td>1.2</td><td>78.4%</td><td>0.9</td></tr>
+            <tr><td>28</td><td>75.2%</td><td>5.2</td><td>4.7</td><td>82.9%</td><td>3.9</td></tr>
+            <tr><td>30</td><td>87.1%</td><td>6.0</td><td>5.7</td><td>86.5%</td><td>5.0</td></tr>
+            <tr style="background:rgba(200,146,42,0.08);font-weight:700"><td>32</td><td>87.8%</td><td>6.0</td><td>5.9</td><td>88.9%</td><td>5.2</td></tr>
+            <tr><td>40</td><td>81.0%</td><td>5.5</td><td>5.3</td><td>89.4%</td><td>4.8</td></tr>
+            <tr><td>50</td><td>70.7%</td><td>4.7</td><td>4.5</td><td>81.5%</td><td>3.7</td></tr>
+            <tr><td>60</td><td>59.7%</td><td>3.8</td><td>3.7</td><td>72.3%</td><td>2.7</td></tr>
+            <tr style="font-weight:700"><td colspan="4">Total cumulé (S25→S65)</td><td>—</td><td>152.5</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="font-size:0.68rem;color:var(--gris);margin-top:0.5rem">Valeurs par poule présente/semaine (PP). Source : Objectifs Hubbard HEP 2025.</div>
+    </div>
+    <div class="card">
+      <div class="card-h">📝 Collectes Enregistrées</div>
+      <div id="oeufs-list"><div style="color:var(--gris);font-size:0.82rem;padding:1rem;text-align:center">La production démarrera en Septembre 2026. Enregistrez ici les premières collectes.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ INCUBATION ============ -->
+<div class="page" id="page-incubation">
+  <div class="page-hd">
+    <div><div class="page-title">🔆 Couvoir</div><div class="page-sub">Réception œufs · Mirage · Incubation · Éclosion — traçabilité complète par lot</div></div>
+    <div style="display:flex;gap:0.5rem">
+      <button class="btn btn-o" onclick="openModal('m-fournisseur')">+ Fournisseur</button>
+      <button class="btn btn-p" onclick="openModal('m-reception')">+ Réception Œufs</button>
+    </div>
+  </div>
+  <div class="alert alert-i">ℹ️ <span>Chaque réception d'œufs crée un <strong>lot traçable</strong> (code ORIGINE-AAMMJJ-N°). Le mirage et l'éclosion se rattachent à ce code. Origine = Troupeau propre (TR) ou fournisseur externe (F1, F2…).</span></div>
+
+  <div class="stats">
+    <div class="stat s-or"><div class="stat-icon">📦</div><div class="stat-val" id="couv-lots-actifs">0</div><div class="stat-lbl">Lots en Incubation</div></div>
+    <div class="stat s-vert"><div class="stat-icon">🐣</div><div class="stat-val" id="couv-taux-eclosion">—</div><div class="stat-lbl">Taux Éclosion Moyen</div></div>
+    <div class="stat s-ink"><div class="stat-icon">🥚</div><div class="stat-val" id="couv-total-recus">0</div><div class="stat-lbl">Total Œufs Reçus</div></div>
+    <div class="stat s-rouge"><div class="stat-icon">📋</div><div class="stat-val" id="couv-nb-fournisseurs">0</div><div class="stat-lbl">Fournisseurs Enregistrés</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-h">📦 Lots en Cours — Couvoir</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Code Lot</th><th>Origine</th><th>Date Réception</th><th>Œufs Reçus</th><th>Mirage J7</th><th>Mirage J18</th><th>Éclos</th><th>Taux</th><th>Statut</th><th></th></tr></thead>
+        <tbody id="couvoir-lots-table"><tr><td colspan="10" style="text-align:center;color:var(--gris);padding:1rem">Aucun lot en cours. Cliquez sur "+ Réception Œufs" pour commencer.</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="two">
+    <div class="card">
+      <div class="card-h">📊 Pertes Embryonnaires — Référence Hubbard HEP</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Âge lot</th><th>Fertilité</th><th>J0-4</th><th>J5-10</th><th>J11-18</th><th>J19-21</th><th>Éclosion</th></tr></thead>
+          <tbody>
+            <tr><td>S28</td><td>93.9%</td><td>5.6%</td><td>0.8%</td><td>0.6%</td><td>4.0%</td><td>82.9%</td></tr>
+            <tr><td>S32</td><td>97.2%</td><td>4.2%</td><td>0.4%</td><td>0.3%</td><td>3.4%</td><td>88.9%</td></tr>
+            <tr style="background:rgba(200,146,42,0.07);font-weight:600"><td>S35-38</td><td>97.5%</td><td>3.6%</td><td>0.3%</td><td>0.2%</td><td>2.8%</td><td>90.6%</td></tr>
+            <tr><td>S45</td><td>95.6%</td><td>4.8%</td><td>0.4%</td><td>0.4%</td><td>3.8%</td><td>86.1%</td></tr>
+            <tr><td>S55</td><td>90.6%</td><td>6.8%</td><td>0.6%</td><td>0.5%</td><td>6.0%</td><td>76.7%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="font-size:0.68rem;color:var(--gris);margin-top:0.5rem">Valeurs de référence Hubbard HEP — comparer aux taux réels obtenus ci-dessus.</div>
+    </div>
+    <div class="card">
+      <div class="card-h">🏭 Registre des Fournisseurs</div>
+      <div id="fournisseurs-list"><div style="color:var(--gris);font-size:0.82rem;padding:1rem;text-align:center">Aucun fournisseur externe enregistré. Le troupeau propre (TR) est toujours disponible par défaut.</div></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ============ ENGRAISSEMENT ============ -->
+<div class="page" id="page-engraissement">
+  <div class="page-hd">
+    <div><div class="page-title">🍗 Engraissement</div><div class="page-sub">Réception · Suivi quotidien · Pesée vers objectif ≥ 3 kg · Vente finale</div></div>
+    <button class="btn btn-p" onclick="ouvrirReceptionEngraissement()">+ Réception Lot</button>
+  </div>
+  <div class="alert alert-i">ℹ️ <span>Chaque lot d'engraissement peut provenir d'un <strong>lot Poussins du Couvoir</strong> (traçabilité complète œuf → vente) ou d'un <strong>achat externe direct</strong> de poussins d'un jour.</span></div>
+
+  <div class="stats">
+    <div class="stat s-or"><div class="stat-icon">🍗</div><div class="stat-val" id="engr-lots-actifs">0</div><div class="stat-lbl">Lots en Engraissement</div></div>
+    <div class="stat s-vert"><div class="stat-icon">⚖️</div><div class="stat-val" id="engr-poids-moyen">—</div><div class="stat-lbl">Poids Moyen Actuel</div></div>
+    <div class="stat s-ink"><div class="stat-icon">🐔</div><div class="stat-val" id="engr-effectif-total">0</div><div class="stat-lbl">Effectif Total en Cours</div></div>
+    <div class="stat s-rouge"><div class="stat-icon">💰</div><div class="stat-val" id="engr-ventes-total">0</div><div class="stat-lbl">Sujets Vendus (total)</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-h">🍗 Lots en Cours — Engraissement</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Code Lot</th><th>Origine / Parent</th><th>Date Réception</th><th>Effectif Actuel</th><th>Âge (j)</th><th>Dernier Poids</th><th>Écart Objectif</th><th>Statut</th><th>Actions</th></tr></thead>
+        <tbody id="engraissement-lots-table"><tr><td colspan="9" style="text-align:center;color:var(--gris);padding:1rem">Aucun lot en cours. Cliquez sur "+ Réception Lot" pour commencer.</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="two">
+    <div class="card">
+      <div class="card-h">📈 Trajectoire de Référence — Objectif ≥ 3 kg</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Âge</th><th>Poids cible cumulé</th><th>GMQ attendu</th></tr></thead>
+          <tbody>
+            <tr><td>Semaine 1 (J7)</td><td>180 g</td><td>~25 g/j</td></tr>
+            <tr><td>Semaine 2 (J14)</td><td>430 g</td><td>~36 g/j</td></tr>
+            <tr><td>Semaine 3 (J21)</td><td>800 g</td><td>~53 g/j</td></tr>
+            <tr><td>Semaine 4 (J28)</td><td>1250 g</td><td>~64 g/j</td></tr>
+            <tr><td>Semaine 5 (J35)</td><td>1750 g</td><td>~71 g/j</td></tr>
+            <tr><td>Semaine 6 (J42)</td><td>2250 g</td><td>~71 g/j</td></tr>
+            <tr style="background:rgba(200,146,42,0.07);font-weight:600"><td>Semaine 7 (J49)</td><td>2700 g</td><td>~64 g/j</td></tr>
+            <tr style="background:rgba(45,106,79,0.08);font-weight:700"><td>Semaine 8 (J56) — Objectif</td><td>≥ 3 000 g</td><td>~43 g/j</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="font-size:0.68rem;color:var(--gris);margin-top:0.5rem">Trajectoire indicative poulet de chair standard — un écart de plus de 10% déclenche une alerte automatique lors de la pesée.</div>
+    </div>
+    <div class="card">
+      <div class="card-h">🧾 Historique des Ventes Finales</div>
+      <div id="ventes-engraissement-list"><div style="color:var(--gris);font-size:0.82rem;padding:1rem;text-align:center">Aucune vente enregistrée pour le moment.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ NUTRITION ============ -->
+<div class="page" id="page-nutrition">
+  <div class="page-hd">
+    <div><div class="page-title">🌾 Nutrition Hubbard</div><div class="page-sub">Recommandations Hubbard HEP — Adapté climat chaud (&gt;28°C)</div></div>
+  </div>
+  <div class="alert alert-i">ℹ️ <span>À Obala (température moy. 25-30°C), utiliser le tableau Hubbard <strong>"Climat chaud >28°C"</strong>. EM aliment ponte recommandé : <strong>2 850 kcal/kg</strong>. Ration journalière cible au pic : <strong>165 g/poule</strong>.</span></div>
+
+  <div class="card">
+    <div class="card-h">📋 Programme Alimentaire Complet (Poussinière → Ponte)</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Phase</th><th>Âge</th><th>EM (kcal/kg)</th><th>Protéines %</th><th>Lysine dig. %</th><th>Calcium %</th><th>Phos. dispo. %</th><th>Remarques</th></tr></thead>
+        <tbody>
+          <tr><td><span class="badge b-bl">Démarrage</span></td><td>J0-28</td><td>2 850</td><td>18.2-19.4</td><td>0.97</td><td>1.01-1.08</td><td>0.46-0.48</td><td>Miettes · Ad libitum</td></tr>
+          <tr><td><span class="badge b-gr">Croissance</span></td><td>J29-126</td><td>2 700</td><td>14.3-14.9</td><td>0.55</td><td>0.89-0.95</td><td>0.38-0.41</td><td>Farine grossière · Ration contrôlée</td></tr>
+          <tr><td><span class="badge b-o">Transition</span></td><td>J126→1%</td><td>2 750</td><td>14.0-14.6</td><td>0.57</td><td>1.31-1.60</td><td>0.41-0.44</td><td>Augmentation Ca progressive</td></tr>
+          <tr style="background:rgba(200,146,42,0.06)"><td><span class="badge b-o">Ponte I</span></td><td>1%→280j</td><td>2 850</td><td>15.4-15.9</td><td>0.66</td><td>3.17-3.47</td><td>0.39-0.42</td><td>Climat chaud · +matière grasse</td></tr>
+          <tr><td><span class="badge b-gr">Ponte II</span></td><td>281j→réforme</td><td>2 825</td><td>14.4-15.0</td><td>0.63</td><td>3.44-3.74</td><td>0.36-0.39</td><td>Dès poids œuf ≥65g</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="two">
+    <div class="card">
+      <div class="card-h">🍽️ Apports Nutritionnels au Pic de Ponte (660 ♀)</div>
+      <div style="display:grid;gap:0.5rem;font-size:0.82rem">
+        <div style="padding:0.65rem;background:var(--sable);border-radius:8px">
+          <div style="font-weight:600;margin-bottom:4px">Ingéré EM cible (25°C)</div>
+          <div style="display:flex;justify-content:space-between"><span>Par poule/jour</span><span style="font-weight:700">450 kcal</span></div>
+          <div style="display:flex;justify-content:space-between"><span>Ration/poule/jour</span><span style="font-weight:700">158-162 g (hors-sol)</span></div>
+          <div style="display:flex;justify-content:space-between"><span>Total 660 poules/jour</span><span style="font-weight:700">~105-107 kg aliment</span></div>
+        </div>
+        <div style="padding:0.65rem;background:var(--sable);border-radius:8px">
+          <div style="font-weight:600;margin-bottom:4px">Acides Aminés Clés (mg/poule/j)</div>
+          <div style="display:flex;justify-content:space-between"><span>Lysine</span><span style="font-weight:700">1 025 mg dig.</span></div>
+          <div style="display:flex;justify-content:space-between"><span>Méthionine</span><span style="font-weight:700">573 mg dig.</span></div>
+          <div style="display:flex;justify-content:space-between"><span>Méth.+Cystine</span><span style="font-weight:700">1 011 mg dig.</span></div>
+        </div>
+        <div style="padding:0.65rem;background:var(--sable);border-radius:8px">
+          <div style="font-weight:600;margin-bottom:4px">Minéraux Clés</div>
+          <div style="display:flex;justify-content:space-between"><span>Calcium/jour</span><span style="font-weight:700">5 000-5 400 mg</span></div>
+          <div style="display:flex;justify-content:space-between"><span>Phosphore dispo./jour</span><span style="font-weight:700">630-680 mg</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-h">💊 Vitamines & Minéraux (Hubbard)</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Nutriment</th><th>Poussinière</th><th>Ponte</th></tr></thead>
+          <tbody>
+            <tr><td>Vitamine A</td><td>12 000 UI/kg</td><td>13 000 UI/kg</td></tr>
+            <tr><td>Vitamine D3</td><td>4 000 UI/kg</td><td>5 000 UI/kg</td></tr>
+            <tr><td>Vitamine E</td><td>100 UI/kg</td><td>130 UI/kg</td></tr>
+            <tr><td>Riboflavine B2</td><td>14 mg/kg</td><td>16 mg/kg</td></tr>
+            <tr><td>Acide Folique B10</td><td>3 mg/kg</td><td>4 mg/kg</td></tr>
+            <tr><td>Biotine H</td><td>0.30 mg/kg</td><td>0.45 mg/kg</td></tr>
+            <tr><td>Manganèse</td><td colspan="2" style="text-align:center">100 mg/kg</td></tr>
+            <tr><td>Zinc</td><td colspan="2" style="text-align:center">100 mg/kg</td></tr>
+            <tr><td>Sélénium</td><td colspan="2" style="text-align:center">0.30-0.40 mg/kg</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-h">🌡️ Conseils Nutrition Climat Chaud (Obala)</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;font-size:0.82rem">
+      <div style="padding:0.85rem;background:var(--sable);border-radius:9px"><strong style="display:block;margin-bottom:4px">1. Aliment haute EM</strong>Utiliser EM ≥2 850 kcal/kg en ponte. Ajouter huile de palme ou soja : 4-8% matière grasse.</div>
+      <div style="padding:0.85rem;background:var(--sable);border-radius:9px"><strong style="display:block;margin-bottom:4px">2. Granulométrie</strong>Passer de farine à miettes ou granulés pour réduire gaspillage et stress alimentaire en chaleur.</div>
+      <div style="padding:0.85rem;background:var(--sable);border-radius:9px"><strong style="display:block;margin-bottom:4px">3. Lumières nocturnes</strong>Allumer 1-2h au milieu de la nuit + eau fraîche + Vitamine C + acide salicylique (si autorisé).</div>
+      <div style="padding:0.85rem;background:var(--sable);border-radius:9px"><strong style="display:block;margin-bottom:4px">4. Qualité de l'eau</strong>pH 5.5-6.8 · Chlore bout de ligne : 1 ppm · Potentiel Redox >600 mV · T° eau : 24-26°C.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ VACCIN ============ -->
+<div class="page" id="page-vaccin">
+  <div class="page-hd">
+    <div><div class="page-title">💉 Programme Vaccinal</div><div class="page-sub">FETAGHIS AGROTECH · Hubbard HEP · Cameroun Obala 2025-2026</div></div>
+    <button class="btn btn-p" onclick="openModal('m-vaccin')">+ Acte Vaccinal</button>
+  </div>
+  <div class="alert alert-d">🚨 <span><strong>Maladies prioritaires à Obala :</strong> Newcastle (NDV endémique géno XIV-XVII), Gumboro hypervirulent, Variole aviaire (vecteur moustique Culex), Choléra aviaire (saison pluies). Variole : toiles anti-moustiques OBLIGATOIRES.</span></div>
+  <div class="two">
+    <div class="card">
+      <div class="card-h">📅 Statut Vaccinal Actuel (Semaine 5-6)</div>
+      <div id="vacc-status"></div>
+    </div>
+    <div class="card">
+      <div class="card-h">⚠️ Prochains Actes Urgents</div>
+      <div id="vacc-urgent"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-h">📋 Calendrier Vaccinal Complet — FETAGHIS Obala 2025</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Âge</th><th>Stade</th><th>Maladie</th><th>Vaccin / Produit</th><th>Voie</th><th>Statut</th><th>Action</th></tr></thead>
+        <tbody id="vacc-table"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ============ BIOSECURITE ============ -->
+<div class="page" id="page-biosec">
+  <div class="page-hd">
+    <div><div class="page-title">🛡️ Biosécurité</div><div class="page-sub">Protocoles FETAGHIS / Hubbard adaptés au contexte camerounais</div></div>
+  </div>
+  <div class="alert alert-d">🚨 <span><strong>Risque Obala :</strong> Promiscuité avec aviculture villageoise (poulets locaux non vaccinés) = risque majeur Newcastle & Variole. Toiles anti-moustiques indispensables sur toutes les ouvertures.</span></div>
+  <div class="three">
+    <div class="card" style="margin-bottom:0">
+      <div class="card-h">🚪 Accès & Visiteurs</div>
+      <div style="font-size:0.8rem;line-height:1.8">
+        ✅ Zone tampon avec pédiluve<br>✅ Douche obligatoire à l'entrée<br>✅ Vêtements dédiés élevage<br>✅ Registre visiteurs<br>✅ Clôture périphérique<br>❌ Véhicules non autorisés<br>❌ Animaux domestiques extérieurs
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-h">🚛 Véhicules & Livraisons</div>
+      <div style="font-size:0.8rem;line-height:1.8">
+        ✅ Désinfection au portail<br>✅ Parking EXTÉRIEUR à la ferme<br>✅ Aliment livré hors clôture<br>✅ Gaz livré hors clôture<br>❌ Camion d'aliment en zone propre<br>✅ Pédisacs voiture → douche
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:0">
+      <div class="card-h">🌿 Litière & Intérieur</div>
+      <div style="font-size:0.8rem;line-height:1.8">
+        ✅ Copeaux neufs (10-15 cm)<br>✅ Sol bétonné lavable<br>✅ Vide sanitaire ≥3 semaines<br>✅ Aucune litière accumulée fin lot<br>✅ Équipements faciles à laver<br>✅ Eau chlorée (1 ppm résiduel)
+      </div>
+    </div>
+  </div>
+  <div class="two" style="margin-top:1rem">
+    <div class="card">
+      <div class="card-h">🦟 Lutte Anti-Vecteurs (PRIORITAIRE OBALA)</div>
+      <div style="font-size:0.82rem;line-height:1.7">
+        <div class="alert alert-d" style="margin-bottom:0.75rem">🦟 <span>Variole aviaire transmise par moustiques Culex. Saison des pluies (mars-juin / sept-nov) = risque maximal.</span></div>
+        <strong>Mesures obligatoires :</strong><br>
+        — Toiles anti-moustiques sur TOUTES les ouvertures (ventilateurs, fenêtres, entrées d'air)<br>
+        — Lampes anti-insectes à l'intérieur<br>
+        — Raticides en bornes sécurisées (permanence)<br>
+        — Filets anti-oiseaux sauvages<br>
+        — Interdire canards et pintades sur le site<br>
+        — Renouveler appâts tous les 2 semaines
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-h">🧹 Nettoyage & Désinfection</div>
+      <div style="font-size:0.82rem;line-height:1.8">
+        <div style="display:grid;gap:0.5rem">
+          <div style="padding:0.6rem;background:var(--sable);border-radius:7px"><strong>Entre les bandes :</strong> Nettoyage mécanique → Lavage haute pression → Désinfection (formaldéhyde, glutaraldéhyde ou ammoniums quaternaires) → Vide sanitaire 3 semaines min.</div>
+          <div style="padding:0.6rem;background:var(--sable);border-radius:7px"><strong>Qualité eau (hebdo) :</strong> pH 5.5-6.8 · Redox >600 mV · Chlore 0.5-1 ppm en bout de ligne · Rinçage canalisation hebdomadaire</div>
+          <div style="padding:0.6rem;background:var(--sable);border-radius:7px"><strong>Mortalité (quotidien) :</strong> Ramassage + incinération ou fosse compostage étanche. JAMAIS abandonner cadavres.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SANTE ============ -->
+<div class="page" id="page-sante">
+  <div class="page-hd">
+    <div><div class="page-title">🏥 Santé & Traitements</div><div class="page-sub">Prophylaxie antiparasitaire et actes sanitaires</div></div>
+    <button class="btn btn-p" onclick="openModal('m-sante')">+ Enregistrer Acte</button>
+  </div>
+  <div class="two">
+    <div class="card">
+      <div class="card-h">🔬 Programme Antiparasitaire (FETAGHIS)</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Âge</th><th>Cible</th><th>Produit</th><th>Statut</th></tr></thead>
+          <tbody>
+            <tr><td>J1-3</td><td>Coccidiose</td><td>Amprolium / Toltrazuril</td><td id="para-1"><span class="badge b-o">⏳ À vérifier</span></td></tr>
+            <tr><td>S4</td><td>Vers GI</td><td>Lévamisole ou Fenbendazole</td><td id="para-2"><span class="badge b-o">⏳ Prochain</span></td></tr>
+            <tr><td>S8</td><td>Vers GI - rappel</td><td>Lévamisole ou Ivermectine</td><td><span class="badge b-gr">À venir</span></td></tr>
+            <tr><td>S12-14</td><td>Poux / Acariens</td><td>Pyréthrines / Ivermectine</td><td><span class="badge b-gr">À venir</span></td></tr>
+            <tr><td>S18</td><td>Acariens rouges</td><td>Elector SC / Butox (bâtiment)</td><td><span class="badge b-gr">À venir</span></td></tr>
+            <tr><td>En ponte</td><td>Coccidiose/Vers</td><td>Toltrazuril 72h / Fenbendazole 5j</td><td><span class="badge b-gr">À venir</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="font-size:0.7rem;color:var(--gris);margin-top:0.5rem">📌 Coproscopie obligatoire pour guider traitements curatifs. Respecter délais d'attente œufs en production.</div>
+    </div>
+    <div class="card">
+      <div class="card-h">🕐 Historique des Actes Sanitaires</div>
+      <div class="tl" id="sante-timeline">
+        <div class="tl-item"><div class="tl-date">19 Mars 2026</div><div class="tl-text">Réception poussins J1 — Vaccination Marek (HVT+Rispens) au couvoir</div><div class="tl-note">15 750 femelles + 2 205 mâles HEP départ couvoir Hubbard — Ferme Moderne du Sud</div></div>
+        <div class="tl-item"><div class="tl-date">19 Mars 2026</div><div class="tl-text">Vaccination ND+IB spray couvoir (CEVAC Vitabron L)</div><div class="tl-note">Gouttelettes grossières — Primo-vaccination précoce</div></div>
+        <div class="tl-item"><div class="tl-date">25-28 Mars 2026</div><div class="tl-text">Rappel Newcastle B1/Clone30 — J7-10</div><div class="tl-note">Instillation oculo-nasale — Eau sans chlore — Tôt le matin</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-h">🩺 Suivi Sérologique Recommandé (LANAVET Garoua / LABOVET Yaoundé)</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Moment</th><th>Paramètre</th><th>Objectifs / Valeurs cibles</th><th>Statut</th></tr></thead>
+        <tbody>
+          <tr><td>J1 (arrivée)</td><td>AOM NDV, IBD, IBV</td><td>NDV ≥ 5 log2 (HI) · IBD ≥ 1000 ELISA</td><td><span class="badge b-o">À réaliser</span></td></tr>
+          <tr><td>S6-8</td><td>Réponse post-ND</td><td>HI ≥ 4 log2 · CV &lt; 25%</td><td><span class="badge b-o">Prochain</span></td></tr>
+          <tr><td>S12-14</td><td>Réponse IBD + AE</td><td>ELISA IBD ≥ 2 000</td><td><span class="badge b-gr">À venir</span></td></tr>
+          <tr><td>S18-20</td><td>Profil NDV+IBV+IBD</td><td>Valider avant injection huileux</td><td><span class="badge b-gr">À venir</span></td></tr>
+          <tr><td>S24-26</td><td>Post-inactivé huileux</td><td>NDV HI ≥ 6 log2 · IBD ≥ 4000 · IBV ≥ 600</td><td><span class="badge b-gr">À venir</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="font-size:0.7rem;color:var(--gris);margin-top:0.5rem">📌 Prélever minimum 20-30 sérums par bâtiment de manière aléatoire. Contact : LANAVET Garoua / LABOVET Yaoundé.</div>
+  </div>
+</div>
+
+<!-- ============ MORTALITE ============ -->
+<div class="page" id="page-mortalite">
+  <div class="page-hd">
+    <div><div class="page-title">📉 Mortalité</div><div class="page-sub">Suivi des pertes et analyse des causes</div></div>
+    <button class="btn btn-p" onclick="openModal('m-mort')">+ Enregistrer Perte</button>
+  </div>
+  <div class="stats">
+    <div class="stat s-rouge"><div class="stat-icon">💀</div><div class="stat-val" id="mort-total">0</div><div class="stat-lbl">Pertes Totales</div></div>
+    <div class="stat s-or"><div class="stat-icon">📊</div><div class="stat-val" id="mort-taux">0.0%</div><div class="stat-lbl">Taux Mortalité</div><div class="stat-trend t-up">Objectif &lt;1%/sem</div></div>
+    <div class="stat s-vert"><div class="stat-icon">🐔</div><div class="stat-val" id="mort-effectif">751</div><div class="stat-lbl">Effectif Restant</div></div>
+    <div class="stat s-ink"><div class="stat-icon">📋</div><div class="stat-val" id="mort-semaine">0</div><div class="stat-lbl">Pertes Cette Semaine</div></div>
+  </div>
+  <div class="card">
+    <div class="card-h">📋 Registre de Mortalité</div>
+    <div id="mort-table-wrap">
+      <div style="color:var(--gris);font-size:0.82rem;padding:1rem;text-align:center">Aucune perte enregistrée.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ VENTES (CONSOLIDÉ) ============ -->
+<div class="page" id="page-ventes">
+  <div class="page-hd">
+    <div><div class="page-title">🧾 Ventes — Vue Consolidée</div><div class="page-sub">Toutes les ventes, tous modules confondus, avec traçabilité complète</div></div>
+  </div>
+  <div class="alert alert-i">ℹ️ <span>Chaque ligne est cliquable et remonte la chaîne de traçabilité jusqu'à l'origine (œuf / troupeau / fournisseur). Les ventes proviennent automatiquement du module Engraissement (et plus tard, Poussins / Troupeau).</span></div>
+
+  <div class="stats">
+    <div class="stat s-vert"><div class="stat-icon">💵</div><div class="stat-val" id="vt-revenu-total">0</div><div class="stat-lbl">Revenu Total Ventes (FCFA)</div></div>
+    <div class="stat s-or"><div class="stat-icon">🐔</div><div class="stat-val" id="vt-sujets-vendus">0</div><div class="stat-lbl">Sujets Vendus (total)</div></div>
+    <div class="stat s-ink"><div class="stat-icon">⚖️</div><div class="stat-val" id="vt-poids-total">0</div><div class="stat-lbl">Poids Total Vendu (kg)</div></div>
+    <div class="stat s-rouge"><div class="stat-icon">📊</div><div class="stat-val" id="vt-prix-moyen">—</div><div class="stat-lbl">Prix Moyen Obtenu (FCFA/kg)</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-h">📋 Registre Consolidé des Ventes</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Date</th><th>Lot Vendu</th><th>Module</th><th>Nb Sujets</th><th>Poids (kg)</th><th>Prix/kg</th><th>Montant</th><th>Acheteur</th><th>Traçabilité</th></tr></thead>
+        <tbody id="ventes-consolide-table"><tr><td colspan="9" style="text-align:center;color:var(--gris);padding:1rem">Aucune vente enregistrée pour le moment.</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-h">📈 Rentabilité par Lot (Engraissement)</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Lot</th><th>Effectif Initial</th><th>Mortalité</th><th>Aliment Total (kg)</th><th>Poids Vendu (kg)</th><th>Revenu (FCFA)</th><th>Marge Estimée</th></tr></thead>
+        <tbody id="rentabilite-table"><tr><td colspan="7" style="text-align:center;color:var(--gris);padding:1rem">Aucune donnée disponible pour le moment.</td></tr></tbody>
+      </table>
+    </div>
+    <div style="font-size:0.68rem;color:var(--gris);margin-top:0.5rem">Marge estimée = Revenu − (coût aliment estimé à 350 FCFA/kg). Indicatif — à ajuster avec le coût réel de la formule utilisée.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-h">🔍 Recherche par Code de Lot</div>
+    <div class="fgrid" style="margin-bottom:0.8rem">
+      <div class="fg" style="grid-column:1/-1"><input class="fi" type="text" id="recherche-lot-input" placeholder="Ex: TR-260626-01" oninput="rechercherLot()"></div>
+    </div>
+    <div id="recherche-lot-resultat"></div>
+  </div>
+</div>
+
+<!-- ============ FINANCES ============ -->
+<div class="page" id="page-finance">
+  <div class="page-hd">
+    <div><div class="page-title">💰 Finances</div><div class="page-sub">Recettes, dépenses et rentabilité — PoultryRevolution</div></div>
+    <button class="btn btn-p" onclick="openModal('m-finance')">+ Transaction</button>
+  </div>
+  <div class="stats">
+    <div class="stat s-vert"><div class="stat-icon">📈</div><div class="stat-val" id="fin-recettes">0</div><div class="stat-lbl">Recettes (FCFA)</div></div>
+    <div class="stat s-rouge"><div class="stat-icon">📉</div><div class="stat-val" id="fin-depenses">4 620 000</div><div class="stat-lbl">Dépenses (FCFA)</div></div>
+    <div class="stat s-or"><div class="stat-icon">💵</div><div class="stat-val" id="fin-solde" style="font-size:1.5rem">−4 620 000</div><div class="stat-lbl">Solde (FCFA)</div></div>
+    <div class="stat s-ink"><div class="stat-icon">🐣</div><div class="stat-val">—</div><div class="stat-lbl">Prix Cible Poussin</div><div class="stat-trend t-neu">~300-400 FCFA/poussin</div></div>
+  </div>
+  <div class="two">
+    <div class="card">
+      <div class="card-h">💸 Transactions</div>
+      <div id="fin-list">
+        <div style="background:rgba(181,50,42,0.07);border-radius:9px;padding:0.75rem;display:flex;justify-content:space-between;font-size:0.83rem;margin-bottom:0.5rem">
+          <div><div style="font-weight:600">660 Poulettes Hubbard HEP</div><div style="font-size:0.72rem;color:var(--gris)">19/03/2026 · Achat animaux</div></div>
+          <span style="font-weight:700;color:var(--rouge)">−4 620 000</span>
+        </div>
+        <div style="background:rgba(45,106,79,0.07);border-radius:9px;padding:0.75rem;display:flex;justify-content:space-between;font-size:0.83rem">
+          <div><div style="font-weight:600">91 Coquelets M77 (gratuits)</div><div style="font-size:0.72rem;color:var(--gris)">19/03/2026 · +4% FOC Hubbard</div></div>
+          <span style="font-weight:700;color:var(--vert)">0</span>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-h">📊 Rentabilité Prévisionnelle</div>
+      <div style="font-size:0.82rem;display:grid;gap:0.5rem">
+        <div style="padding:0.65rem;background:var(--sable);border-radius:8px">
+          <div style="font-weight:600;margin-bottom:3px">Production estimée (40 semaines ponte)</div>
+          <div style="color:var(--gris)">~100 000 poussins × 300-400 FCFA = <strong>30-40 M FCFA recettes</strong></div>
+        </div>
+        <div style="padding:0.65rem;background:var(--sable);border-radius:8px">
+          <div style="font-weight:600;margin-bottom:3px">Coûts opérationnels estimés</div>
+          <div style="color:var(--gris)">Alimentation + vaccins + MO + eau/élec. : <strong>~18-22 M FCFA</strong></div>
+        </div>
+        <div style="padding:0.65rem;background:rgba(200,146,42,0.12);border-radius:8px;border:1.5px solid var(--or)">
+          <div style="font-weight:600;margin-bottom:3px">Bénéfice Net Estimé</div>
+          <div><strong>~8-12 M FCFA</strong> sur la durée du lot (estimation indicative)</div>
+        </div>
+        <div style="font-size:0.7rem;color:var(--gris)">⚠️ Estimations basées sur objectifs Hubbard HEP. Résultats réels dépendront des conditions d'élevage, prix de vente et mortalité.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ RAPPORTS ============ -->
+<div class="page" id="page-rapports">
+  <div class="page-hd">
+    <div><div class="page-title">📋 Rapports</div><div class="page-sub">Synthèses et indicateurs de performance</div></div>
+    <button class="btn btn-p" onclick="showToast('📄 Export PDF généré !')">📄 Exporter PDF</button>
+  </div>
+  <div class="alert alert-s">✅ <span>Lot HEP-2026 en cours. Phase poussinière semaines 5-6. Tous les indicateurs seront disponibles au démarrage de la ponte (~S25, Sept. 2026).</span></div>
+  <div class="two">
+    <div class="card">
+      <div class="card-h">📊 Indicateurs Clés (KPI)</div>
+      <div style="display:grid;gap:0.5rem;font-size:0.82rem">
+        <div style="padding:0.65rem;background:var(--sable);border-radius:8px;display:flex;justify-content:space-between"><span>Effectif arrivée</span><span style="font-weight:700">751 (660♀ + 91♂)</span></div>
+        <div style="padding:0.65rem;background:var(--sable);border-radius:8px;display:flex;justify-content:space-between"><span>Coût unitaire poulette</span><span style="font-weight:700">7 000 FCFA</span></div>
+        <div style="padding:0.65rem;background:var(--sable);border-radius:8px;display:flex;justify-content:space-between"><span>Taux ponte objectif pic</span><span style="font-weight:700">87.8% (S32)</span></div>
+        <div style="padding:0.65rem;background:var(--sable);border-radius:8px;display:flex;justify-content:space-between"><span>Taux éclosion objectif</span><span style="font-weight:700">88.9% (S32-38)</span></div>
+        <div style="padding:0.65rem;background:var(--sable);border-radius:8px;display:flex;justify-content:space-between"><span>Poussins/♀ logée (total)</span><span style="font-weight:700">152.5 (objectif HEP)</span></div>
+        <div style="padding:0.65rem;background:var(--sable);border-radius:8px;display:flex;justify-content:space-between"><span>Stimulation lumineuse</span><span style="font-weight:700">~19 Août 2026 (J154)</span></div>
+        <div style="padding:0.65rem;background:rgba(200,146,42,0.12);border-radius:8px;border:1.5px solid var(--or);display:flex;justify-content:space-between"><span style="font-weight:600">Fin de lot estimée</span><span style="font-weight:800">~Juin 2027 (S64)</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-h">📅 Documents & Référentiels</div>
+      <div style="display:grid;gap:0.5rem;font-size:0.82rem">
+        <div style="padding:0.65rem;background:var(--sable);border-radius:8px"><strong>Objectifs Performance HEP</strong><br><span style="color:var(--gris)">Hubbard 2025 — Femelle Parentale Efficiency Plus</span></div>
+        <div style="padding:0.65rem;background:var(--sable);border-radius:8px"><strong>Guide d'Élevage HEP</strong><br><span style="color:var(--gris)">Guide complet poussinière + ponte Hubbard Conventionnel</span></div>
+        <div style="padding:0.65rem;background:var(--sable);border-radius:8px"><strong>Programme Prophylaxie FETAGHIS</strong><br><span style="color:var(--gris)">Référence FETAGHIS-PROPHYL-HEP-2025 · Mars 2025 · Obala</span></div>
+        <div style="padding:0.65rem;background:var(--sable);border-radius:8px"><strong>Recommandations Nutritionnelles</strong><br><span style="color:var(--gris)">Hubbard HEP Femelles + Mâles M77 Conventionnels</span></div>
+        <div style="padding:0.65rem;background:var(--sable);border-radius:8px"><strong>Documents Douaniers Lot</strong><br><span style="color:var(--gris)">LTAN 057-48485555 · Vol AF910/19 · 19 Mars 2026</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+</div>
+
+<!-- ========== MODALS ========== -->
+
+<!-- Pesée -->
+<div class="modal-ov" id="m-pesee">
+  <div class="modal">
+    <div class="modal-hd"><div class="modal-title">⚖️ Enregistrer une Pesée</div><button class="modal-x" onclick="closeModal('m-pesee')">✕</button></div>
+    <div class="fgrid">
+      <div class="fg"><label class="fl">Date de Pesée</label><input class="fi" type="date" id="p-date"></div>
+      <div class="fg"><label class="fl">Sexe</label><select class="fi" id="p-sexe"><option value="M">♂ Mâles</option><option value="F">♀ Femelles</option></select></div>
+      <div class="fg"><label class="fl">Semaine</label><input class="fi" type="number" placeholder="Ex: 6" id="p-sem"></div>
+      <div class="fg"><label class="fl">Poids Moyen (g)</label><input class="fi" type="number" placeholder="Ex: 795" id="p-poids"></div>
+      <div class="fg"><label class="fl">Nb Sujets Pesés</label><input class="fi" type="number" placeholder="Ex: 120" id="p-nb"></div>
+      <div class="fg"><label class="fl">Uniformité %</label><input class="fi" type="number" placeholder="Ex: 85" id="p-unif"></div>
+      <div class="fg"><label class="fl">CV %</label><input class="fi" type="number" placeholder="Ex: 7.5" id="p-cv"></div>
+    </div>
+    <div class="factions"><button class="btn btn-o" onclick="closeModal('m-pesee')">Annuler</button><button class="btn btn-p" onclick="addPesee()">✓ Enregistrer</button></div>
+  </div>
+</div>
+
+<!-- Oeuf -->
+<div class="modal-ov" id="m-oeuf">
+  <div class="modal">
+    <div class="modal-hd"><div class="modal-title">🥚 Collecte d'Œufs</div><button class="modal-x" onclick="closeModal('m-oeuf')">✕</button></div>
+    <div class="fgrid">
+      <div class="fg"><label class="fl">Date</label><input class="fi" type="date" id="o-date"></div>
+      <div class="fg"><label class="fl">Matin</label><input class="fi" type="number" placeholder="0" id="o-mat"></div>
+      <div class="fg"><label class="fl">Soir</label><input class="fi" type="number" placeholder="0" id="o-soir"></div>
+      <div class="fg"><label class="fl">Cassés/Défectueux</label><input class="fi" type="number" placeholder="0" id="o-cas"></div>
+      <div class="fg"><label class="fl">Poids Moyen Œuf (g)</label><input class="fi" type="number" placeholder="0" id="o-poids"></div>
+    </div>
+    <div class="factions"><button class="btn btn-o" onclick="closeModal('m-oeuf')">Annuler</button><button class="btn btn-p" onclick="addOeuf()">✓ Enregistrer</button></div>
+  </div>
+</div>
+
+<!-- Fournisseur -->
+<div class="modal-ov" id="m-fournisseur">
+  <div class="modal">
+    <div class="modal-hd"><div class="modal-title">🏭 Nouveau Fournisseur</div><button class="modal-x" onclick="closeModal('m-fournisseur')">✕</button></div>
+    <div class="fgrid">
+      <div class="fg"><label class="fl">Nom du Fournisseur</label><input class="fi" type="text" placeholder="Ex: Ferme Bonangoa" id="f-nom"></div>
+      <div class="fg"><label class="fl">Contact</label><input class="fi" type="text" placeholder="Ex: 6XX XXX XXX" id="f-contact"></div>
+    </div>
+    <div class="factions"><button class="btn btn-o" onclick="closeModal('m-fournisseur')">Annuler</button><button class="btn btn-p" onclick="addFournisseur()">✓ Enregistrer</button></div>
+  </div>
+</div>
+
+<!-- Réception Œufs (création de lot) -->
+<div class="modal-ov" id="m-reception">
+  <div class="modal">
+    <div class="modal-hd"><div class="modal-title">🥚 Réception d'Œufs — Nouveau Lot</div><button class="modal-x" onclick="closeModal('m-reception')">✕</button></div>
+    <div class="fgrid">
+      <div class="fg"><label class="fl">Origine</label>
+        <select class="fi" id="r-origine">
+          <option value="Troupeau propre">🏠 Troupeau propre (TR)</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">Date de Réception</label><input class="fi" type="date" id="r-date"></div>
+      <div class="fg"><label class="fl">Nombre d'Œufs Reçus</label><input class="fi" type="number" placeholder="Ex: 580" id="r-nb"></div>
+      <div class="fg"><label class="fl">Poids Moyen Œuf (g)</label><input class="fi" type="number" placeholder="Ex: 58" id="r-poids"></div>
+      <div class="fg"><label class="fl">Incubateur N°</label><input class="fi" type="text" placeholder="Ex: Incubateur 1" id="r-machine"></div>
+      <div class="fg"><label class="fl">Observations</label><input class="fi" type="text" placeholder="Optionnel" id="r-obs"></div>
+    </div>
+    <div class="factions"><button class="btn btn-o" onclick="closeModal('m-reception')">Annuler</button><button class="btn btn-p" onclick="addReceptionOeufs()">✓ Créer le Lot</button></div>
+  </div>
+</div>
+
+<!-- Mirage -->
+<div class="modal-ov" id="m-mirage">
+  <div class="modal">
+    <div class="modal-hd"><div class="modal-title">🔍 Mirage</div><button class="modal-x" onclick="closeModal('m-mirage')">✕</button></div>
+    <div class="fgrid">
+      <div class="fg"><label class="fl">Lot</label><select class="fi" id="mi-lot"></select></div>
+      <div class="fg"><label class="fl">Étape</label>
+        <select class="fi" id="mi-etape">
+          <option value="J7">Mirage J7</option>
+          <option value="J18">Mirage J18</option>
+        </select>
+      </div>
+      <div class="fg"><label class="fl">Date</label><input class="fi" type="date" id="mi-date"></div>
+      <div class="fg"><label class="fl">Œufs Clairs / Morts (à retirer)</label><input class="fi" type="number" placeholder="Ex: 12" id="mi-retires"></div>
+    </div>
+    <div class="factions"><button class="btn btn-o" onclick="closeModal('m-mirage')">Annuler</button><button class="btn btn-p" onclick="addMirage()">✓ Enregistrer</button></div>
+  </div>
+</div>
+
+<!-- Éclosion -->
+<div class="modal-ov" id="m-eclosion">
+  <div class="modal">
+    <div class="modal-hd"><div class="modal-title">🐣 Éclosion</div><button class="modal-x" onclick="closeModal('m-eclosion')">✕</button></div>
+    <div class="fgrid">
+      <div class="fg"><label class="fl">Lot</label><select class="fi" id="ec-lot"></select></div>
+      <div class="fg"><label class="fl">Date d'Éclosion</label><input class="fi" type="date" id="ec-date"></div>
+      <div class="fg"><label class="fl">Nombre de Poussins Éclos</label><input class="fi" type="number" placeholder="Ex: 501" id="ec-nb"></div>
+      <div class="fg"><label class="fl">Observations</label><input class="fi" type="text" placeholder="Optionnel" id="ec-obs"></div>
+    </div>
+    <div class="factions"><button class="btn btn-o" onclick="closeModal('m-eclosion')">Annuler</button><button class="btn btn-p" onclick="addEclosion()">✓ Clôturer le Lot</button></div>
+  </div>
+</div>
+
+<!-- Engraissement : Réception lot -->
+<div class="modal-ov" id="m-engr-reception">
+  <div class="modal">
+    <div class="modal-hd"><div class="modal-title">🍗 Réception Lot — Engraissement</div><button class="modal-x" onclick="closeModal('m-engr-reception')">✕</button></div>
+    <div class="fgrid">
+      <div class="fg"><label class="fl">Provenance</label>
+        <select class="fi" id="er-provenance" onchange="toggleProvenanceEngr()">
+          <option value="couvoir">🐣 Lot du Couvoir (traçabilité complète)</option>
+          <option value="externe">🚚 Achat externe direct de poussins</option>
+        </select>
+      </div>
+      <div class="fg" id="er-lot-parent-wrap"><label class="fl">Lot Poussins d'origine</label><select class="fi" id="er-lot-parent" onchange="afficherPreviewTracabilite()"></select></div>
+      <div class="fg" id="er-origine-externe-wrap" style="display:none"><label class="fl">Origine (fournisseur)</label><input class="fi" type="text" placeholder="Ex: Couvoir XYZ" id="er-origine-externe"></div>
+      <div class="fg"><label class="fl">Date de Réception</label><input class="fi" type="date" id="er-date"></div>
+      <div class="fg"><label class="fl">Effectif Reçu</label><input class="fi" type="number" placeholder="Ex: 450" id="er-effectif"></div>
+      <div class="fg"><label class="fl">Poids Moyen à la Réception (g)</label><input class="fi" type="number" placeholder="Ex: 42" id="er-poids-init"></div>
+    </div>
+    <div id="er-tracabilite-preview" style="display:none;margin-top:0.5rem;padding:0.7rem;background:var(--sable);border-radius:9px;font-size:0.8rem"></div>
+    <div class="factions"><button class="btn btn-o" onclick="closeModal('m-engr-reception')">Annuler</button><button class="btn btn-p" onclick="addReceptionEngraissement()">✓ Créer le Lot</button></div>
+  </div>
+</div>
+
+<!-- Engraissement : Contrôle quotidien -->
+<div class="modal-ov" id="m-engr-quotidien">
+  <div class="modal">
+    <div class="modal-hd"><div class="modal-title">📋 Contrôle Quotidien — Engraissement</div><button class="modal-x" onclick="closeModal('m-engr-quotidien')">✕</button></div>
+    <div class="fgrid">
+      <div class="fg"><label class="fl">Lot</label><select class="fi" id="eq-lot"></select></div>
+      <div class="fg"><label class="fl">Date</label><input class="fi" type="date" id="eq-date"></div>
+      <div class="fg"><label class="fl">Mortalité du Jour</label><input class="fi" type="number" placeholder="0" id="eq-mortalite"></div>
+      <div class="fg"><label class="fl">Aliment Distribué (kg)</label><input class="fi" type="number" placeholder="Ex: 38" id="eq-aliment"></div>
+      <div class="fg"><label class="fl">État Lignes d'Eau</label>
+        <select class="fi" id="eq-eau"><option>Bon</option><option>Moyen</option><option>À réparer</option></select>
+      </div>
+      <div class="fg"><label class="fl">Observations</label><input class="fi" type="text" placeholder="Optionnel" id="eq-obs"></div>
+    </div>
+    <div class="factions"><button class="btn btn-o" onclick="closeModal('m-engr-quotidien')">Annuler</button><button class="btn btn-p" onclick="addControleQuotidienEngr()">✓ Enregistrer</button></div>
+  </div>
+</div>
+
+<!-- Engraissement : Pesée hebdomadaire -->
+<div class="modal-ov" id="m-engr-pesee">
+  <div class="modal">
+    <div class="modal-hd"><div class="modal-title">⚖️ Pesée Hebdomadaire — Engraissement</div><button class="modal-x" onclick="closeModal('m-engr-pesee')">✕</button></div>
+    <div class="fgrid">
+      <div class="fg"><label class="fl">Lot</label><select class="fi" id="ep-lot"></select></div>
+      <div class="fg"><label class="fl">Date</label><input class="fi" type="date" id="ep-date"></div>
+      <div class="fg"><label class="fl">Poids Moyen (g)</label><input class="fi" type="number" placeholder="Ex: 1250" id="ep-poids"></div>
+      <div class="fg"><label class="fl">Nb Sujets Pesés</label><input class="fi" type="number" placeholder="Ex: 50" id="ep-nb"></div>
+    </div>
+    <div class="factions"><button class="btn btn-o" onclick="closeModal('m-engr-pesee')">Annuler</button><button class="btn btn-p" onclick="addPeseeEngraissement()">✓ Enregistrer</button></div>
+  </div>
+</div>
+
+<!-- Engraissement : Vente finale -->
+<div class="modal-ov" id="m-engr-vente">
+  <div class="modal">
+    <div class="modal-hd"><div class="modal-title">🧾 Vente Finale — Engraissement</div><button class="modal-x" onclick="closeModal('m-engr-vente')">✕</button></div>
+    <div class="fgrid">
+      <div class="fg"><label class="fl">Lot</label><select class="fi" id="ev-lot"></select></div>
+      <div class="fg"><label class="fl">Date de Vente</label><input class="fi" type="date" id="ev-date"></div>
+      <div class="fg"><label class="fl">Nb Sujets Vendus</label><input class="fi" type="number" placeholder="Ex: 440" id="ev-nb"></div>
+      <div class="fg"><label class="fl">Poids Total Vendu (kg)</label><input class="fi" type="number" placeholder="Ex: 1340" id="ev-poids-total"></div>
+      <div class="fg"><label class="fl">Prix Unitaire (FCFA/kg)</label><input class="fi" type="number" placeholder="Ex: 2200" id="ev-prix-kg"></div>
+      <div class="fg"><label class="fl">Acheteur</label><input class="fi" type="text" placeholder="Ex: Grossiste Marché Central" id="ev-acheteur"></div>
+    </div>
+    <div class="factions"><button class="btn btn-o" onclick="closeModal('m-engr-vente')">Annuler</button><button class="btn btn-p" onclick="addVenteEngraissement()">✓ Générer le Bon de Vente</button></div>
+  </div>
+</div>
+
+<!-- Bon de Vente (affichage post-génération) -->
+<div class="modal-ov" id="m-bon-vente">
+  <div class="modal">
+    <div class="modal-hd"><div class="modal-title">📄 Bon de Vente</div><button class="modal-x" onclick="closeModal('m-bon-vente')">✕</button></div>
+    <div id="bon-vente-content"></div>
+    <div class="factions"><button class="btn btn-p" onclick="closeModal('m-bon-vente')">Fermer</button></div>
+  </div>
+</div>
+
+<!-- Vaccin -->
+<div class="modal-ov" id="m-vaccin">
+  <div class="modal">
+    <div class="modal-hd"><div class="modal-title">💉 Acte Vaccinal</div><button class="modal-x" onclick="closeModal('m-vaccin')">✕</button></div>
+    <div class="fgrid">
+      <div class="fg"><label class="fl">Date</label><input class="fi" type="date" id="v-date"></div>
+      <div class="fg"><label class="fl">Vaccin / Produit</label><input class="fi" type="text" placeholder="Ex: Nobilis ND LaSota" id="v-prod"></div>
+      <div class="fg"><label class="fl">Maladie Ciblée</label><select class="fs" id="v-maladie"><option>Newcastle (NDV)</option><option>Gumboro (IBD)</option><option>Variole Aviaire</option><option>Bronchite Infectieuse</option><option>Marek</option><option>Choléra Aviaire</option><option>Encéphalomyélite (AE)</option><option>Coryza</option><option>Polyvalent Inactivé Huileux</option></select></div>
+      <div class="fg"><label class="fl">Voie</label><select class="fs" id="v-voie"><option>Oculo-nasale</option><option>Eau de boisson</option><option>Spray</option><option>Injection SC</option><option>Injection IM</option><option>Transfixion alaire</option></select></div>
+      <div class="fg"><label class="fl">Effectif Vacciné</label><input class="fi" type="number" placeholder="751" id="v-eff"></div>
+      <div class="fg" style="grid-column:1/-1"><label class="fl">Observations / N° Lot Vaccin</label><input class="fi" type="text" placeholder="N° lot, résultats..." id="v-obs"></div>
+    </div>
+    <div class="factions"><button class="btn btn-o" onclick="closeModal('m-vaccin')">Annuler</button><button class="btn btn-p" onclick="addVaccin()">✓ Enregistrer</button></div>
+  </div>
+</div>
+
+<!-- Santé -->
+<div class="modal-ov" id="m-sante">
+  <div class="modal">
+    <div class="modal-hd"><div class="modal-title">🏥 Acte Sanitaire</div><button class="modal-x" onclick="closeModal('m-sante')">✕</button></div>
+    <div class="fgrid">
+      <div class="fg"><label class="fl">Date</label><input class="fi" type="date" id="s-date"></div>
+      <div class="fg"><label class="fl">Type d'Acte</label><select class="fs" id="s-type"><option>Déparasitage</option><option>Traitement antibiotique</option><option>Désinfection</option><option>Visite vétérinaire</option><option>Prélèvement sérologique</option></select></div>
+      <div class="fg"><label class="fl">Produit</label><input class="fi" type="text" id="s-prod" placeholder="Ex: Lévamisole 10%"></div>
+      <div class="fg" style="grid-column:1/-1"><label class="fl">Observations</label><input class="fi" type="text" id="s-obs" placeholder="Résultats, remarques..."></div>
+    </div>
+    <div class="factions"><button class="btn btn-o" onclick="closeModal('m-sante')">Annuler</button><button class="btn btn-p" onclick="addSante()">✓ Enregistrer</button></div>
+  </div>
+</div>
+
+<!-- Mortalité -->
+<div class="modal-ov" id="m-mort">
+  <div class="modal">
+    <div class="modal-hd"><div class="modal-title">📉 Enregistrer une Perte</div><button class="modal-x" onclick="closeModal('m-mort')">✕</button></div>
+    <div class="fgrid">
+      <div class="fg"><label class="fl">Date</label><input class="fi" type="date" id="mo-date"></div>
+      <div class="fg"><label class="fl">Sexe</label><select class="fs" id="mo-sexe"><option>Femelle ♀</option><option>Mâle ♂</option><option>Mixte</option></select></div>
+      <div class="fg"><label class="fl">Nombre de Pertes</label><input class="fi" type="number" placeholder="0" id="mo-nb"></div>
+      <div class="fg"><label class="fl">Cause</label><select class="fs" id="mo-cause"><option>Stress thermique</option><option>Maladie respiratoire</option><option>Newcastle</option><option>Gumboro</option><option>Traumatisme</option><option>Cause inconnue</option><option>Parasitose</option></select></div>
+      <div class="fg"><label class="fl">Action Prise</label><input class="fi" type="text" id="mo-action" placeholder="Mesures correctives"></div>
+    </div>
+    <div class="factions"><button class="btn btn-o" onclick="closeModal('m-mort')">Annuler</button><button class="btn btn-d" onclick="addMort()">⚠️ Enregistrer</button></div>
+  </div>
+</div>
+
+<!-- Finance -->
+<div class="modal-ov" id="m-finance">
+  <div class="modal">
+    <div class="modal-hd"><div class="modal-title">💰 Nouvelle Transaction</div><button class="modal-x" onclick="closeModal('m-finance')">✕</button></div>
+    <div class="fgrid">
+      <div class="fg"><label class="fl">Date</label><input class="fi" type="date" id="f-date"></div>
+      <div class="fg"><label class="fl">Type</label><select class="fs" id="f-type"><option>Dépense</option><option>Recette</option></select></div>
+      <div class="fg" style="grid-column:1/-1"><label class="fl">Description</label><input class="fi" type="text" id="f-desc" placeholder="Ex: Achat aliment croissance"></div>
+      <div class="fg"><label class="fl">Montant (FCFA)</label><input class="fi" type="number" placeholder="0" id="f-mont"></div>
+      <div class="fg"><label class="fl">Catégorie</label><select class="fs" id="f-cat"><option>Alimentation</option><option>Vaccins/Médicaments</option><option>Main d'œuvre</option><option>Eau/Électricité</option><option>Vente poussins</option><option>Vente œufs à couver</option><option>Équipement</option><option>Transport</option><option>Autre</option></select></div>
+    </div>
+    <div class="factions"><button class="btn btn-o" onclick="closeModal('m-finance')">Annuler</button><button class="btn btn-p" onclick="addFinance()">✓ Enregistrer</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ════════════════════════════════════════════════════════════
+// ===== INITIALISATION FIREBASE (doit être en premier — tout le reste en dépend) =====
+// ════════════════════════════════════════════════════════════
+const firebaseConfig = {
+  apiKey: "AIzaSyDkOcDm0eRlPWOS9I1vhs2vCUJBCUxMxos",
+  authDomain: "poultryevo-mikouma.firebaseapp.com",
+  databaseURL: "https://poultryevo-mikouma-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "poultryevo-mikouma",
+  storageBucket: "poultryevo-mikouma.firebasestorage.app",
+  messagingSenderId: "1053099773260",
+  appId: "1:1053099773260:web:de460c9c170ec6381913e9"
+};
+
+firebase.initializeApp(firebaseConfig);
+const fbAuth = firebase.auth();
+const fbDB = firebase.database();
+fbDB.goOnline();
+
+// ===== DONNÉES =====
+const ARRIVEE = new Date('2026-03-19');
+const FEMELLES = 660;
+const MALES = 91;
+const TOTAL_INIT = FEMELLES + MALES;
+const COUT_FEMELLE = 7000;
+
+// Objectifs poids HEP conditions difficiles/bâtiment ouvert
+const POIDS_OBJ = [
+  {s:1,j:7,poids:140,croiss:null,ration:24,em:68,alim:'Démarrage'},
+  {s:2,j:14,poids:270,croiss:130,ration:30,em:86,alim:'Démarrage'},
+  {s:3,j:21,poids:410,croiss:140,ration:36,em:100,alim:'Démarrage'},
+  {s:4,j:28,poids:550,croiss:140,ration:40,em:110,alim:'Démarrage'},
+  {s:5,j:35,poids:685,croiss:135,ration:46,em:121,alim:'Croissance'},
+  {s:6,j:42,poids:795,croiss:110,ration:49,em:129,alim:'Croissance'},
+  {s:7,j:49,poids:900,croiss:105,ration:52,em:137,alim:'Croissance'},
+  {s:8,j:56,poids:1005,croiss:105,ration:54,em:144,alim:'Croissance'},
+  {s:9,j:63,poids:1100,croiss:95,ration:57,em:150,alim:'Croissance'},
+  {s:10,j:70,poids:1190,croiss:90,ration:59,em:156,alim:'Croissance'},
+  {s:11,j:77,poids:1280,croiss:90,ration:62,em:164,alim:'Croissance'},
+  {s:12,j:84,poids:1375,croiss:95,ration:65,em:173,alim:'Croissance'},
+  {s:13,j:91,poids:1475,croiss:100,ration:69,em:183,alim:'Croissance'},
+  {s:14,j:98,poids:1595,croiss:120,ration:74,em:195,alim:'Croissance'},
+  {s:15,j:105,poids:1715,croiss:120,ration:79,em:208,alim:'Croissance'},
+  {s:16,j:112,poids:1845,croiss:130,ration:84,em:222,alim:'Croissance'},
+  {s:17,j:119,poids:1980,croiss:135,ration:89,em:236,alim:'Croissance'},
+  {s:18,j:126,poids:2115,croiss:135,ration:91,em:251,alim:'Transition'},
+  {s:19,j:133,poids:2260,croiss:145,ration:97,em:266,alim:'Transition'},
+  {s:20,j:140,poids:2410,croiss:150,ration:103,em:283,alim:'Transition'},
+  {s:21,j:147,poids:2570,croiss:160,ration:109,em:300,alim:'Transition'},
+  {s:22,j:154,poids:2725,croiss:155,ration:116,em:318,alim:'Transition'},
+];
+
+// Programme vaccinal FETAGHIS
+const VACCINS = [
+  {age:'J1',stade:'COUVOIR',maladie:'Marek (MDV)',vaccin:'HVT+Rispens (Nobilis Rismavac+CA126)',voie:'SC 0,2ml cou',fait:true,date:'19/03/2026'},
+  {age:'J1',stade:'COUVOIR',maladie:'Newcastle+Bronchite (ND+IB)',vaccin:'CEVAC VITABRON L / MA5+Clone30',voie:'Spray couvoir',fait:true,date:'19/03/2026'},
+  {age:'J7-10',stade:'POULETTE',maladie:'Newcastle (ND)',vaccin:'Nobilis ND Clone 30 / CEVAC ND L',voie:'Oculo-nasale / eau',fait:true,date:'25-28/03/2026'},
+  {age:'J14-18',stade:'POULETTE',maladie:'Bronchite Infectieuse (IB)',vaccin:'Nobilis IB H120 / CEVAC IBird',voie:'Eau de boisson',fait:false,urgent:true,date:'~02-06/04'},
+  {age:'J14-18',stade:'POULETTE',maladie:'Gumboro (IBD)',vaccin:'Nobilis Gumboro 228E / CEVAC IBD L',voie:'Eau de boisson',fait:false,urgent:true,date:'~02-06/04'},
+  {age:'S4-5',stade:'POULETTE',maladie:'Gumboro (IBD) rappel',vaccin:'IBD vivant intermédiaire',voie:'Eau de boisson',fait:false,urgent:true,date:'~16-19/04'},
+  {age:'S4-6',stade:'POULETTE',maladie:'Variole Aviaire (Fowl Pox)',vaccin:'NOBILIS POX / DIFTOSEC',voie:'Transfixion alaire',fait:false,urgent:true,date:'~16-30/04'},
+  {age:'S5-6',stade:'POULETTE',maladie:'Newcastle (ND) rappel',vaccin:'Nobilis ND LaSota',voie:'Eau / Nébulisation',fait:false,urgent:false,date:'~23-30/04'},
+  {age:'S6-8',stade:'POULETTE',maladie:'Choléra Aviaire (Primo)',vaccin:'Poulvac Cholera / Autovaccin',voie:'SC/IM 0,5ml',fait:false,urgent:false,date:'~30/04-14/05'},
+  {age:'S8-10',stade:'POULETTE',maladie:'Choléra Aviaire (Rappel 1)',vaccin:'Même bactérine',voie:'SC/IM 0,5ml',fait:false,urgent:false,date:'~14-28/05'},
+  {age:'S10-12',stade:'POULETTE',maladie:'Encéphalomyélite (AE)',vaccin:'CEVAC AE / Nobilis AE 1143',voie:'Eau de boisson',fait:false,urgent:false,date:'~28/05-11/06'},
+  {age:'S14-16',stade:'POULETTE',maladie:'ND+IB vivant rappel',vaccin:'LaSota+H120',voie:'Eau/Nébulisation',fait:false,urgent:false,date:'~25/06-09/07'},
+  {age:'S16-18',stade:'POULETTE',maladie:'Variole Aviaire rappel',vaccin:'Vaccin variole atténué',voie:'Transfixion alaire',fait:false,urgent:false,date:'~09-23/07'},
+  {age:'S18-20',stade:'PRÉPONTE',maladie:'ND+IB+IBD Polyvalent Inactivé',vaccin:'Nobilis REO+ND+IB+EDS / CEVAC Mx',voie:'IM profonde 0,5ml',fait:false,urgent:false,date:'~23/07-06/08'},
+  {age:'S20-22',stade:'PRÉPONTE',maladie:'Newcastle booster vivant',vaccin:'LaSota rappel post-inactivé',voie:'Eau de boisson',fait:false,urgent:false,date:'~06-19/08'},
+  {age:'S20-22',stade:'PRÉPONTE',maladie:'Choléra Aviaire rappel 2',vaccin:'Bactérine Pasteurella multocida',voie:'SC/IM',fait:false,urgent:false,date:'~06-19/08'},
+  {age:'S30-32',stade:'PONTE',maladie:'Newcastle rappel production',vaccin:'ND vivant LaSota',voie:'Eau de boisson',fait:false,urgent:false,date:'~Nov 2026'},
+  {age:'S40-42',stade:'PONTE',maladie:'Newcastle+IB rappel inactivé',vaccin:'Vaccin inactivé ND+IB huileux',voie:'IM 0,5ml',fait:false,urgent:false,date:'~Jan 2027'},
+];
+
+// ════════════════════════════════════════════════════════════
+// ===== SYSTÈME DE RÔLES / COMPTES (Firebase Authentication) =====
+// ════════════════════════════════════════════════════════════
+// Authentification réelle par email + mot de passe via Firebase Auth.
+// Le rôle de chaque personne est déterminé par son email (mapping ci-dessous),
+// pas saisi librement — ça évite qu'un compte se donne un rôle qu'il ne devrait pas avoir.
+// IMPORTANT : crée ces comptes dans Firebase Console → Authentication → Users,
+// avec l'email exact et un mot de passe choisi pour chaque personne.
+
+const MAPPING_ROLES = {
+  // 'email exact (minuscules)': {nom, role, icone}
+  'rodrigue@poultryevo.cm':  {nom:'Rodrigue', role:'admin', icone:'👑'},
+  'ghislain@poultryevo.cm':  {nom:'Ghislain', role:'collaborateur_plus', icone:'🧑‍🌾'},
+  'modeste@poultryevo.cm':   {nom:'Modeste', role:'collaborateur_plus', icone:'🧑‍🌾'},
+  'terrain@poultryevo.cm':   {nom:'Collaborateur Terrain', role:'terrain', icone:'👷'},
+};
+
+// Modules par identifiant de page (correspond aux id="page-...")
+const MODULES_TERRAIN = ['poids','oeufs','incubation','engraissement','nutrition','vaccin','biosec','sante','mortalite'];
+const MODULES_FINANCE = ['finance'];
+
+let profilActif = null;
+
+function peutVoirPage(pageId){
+  if(!profilActif) return false;
+  if(profilActif.role === 'admin') return true;
+  if(profilActif.role === 'collaborateur_plus'){
+    if(MODULES_FINANCE.includes(pageId)) return false; // lecture limitée → masqué dans cette version simplifiée
+    return true; // inclut 'ventes'
+  }
+  if(profilActif.role === 'terrain'){
+    return ['dashboard','lot','rapports',...MODULES_TERRAIN].includes(pageId);
+  }
+  return false;
+}
+
+function afficherEcranLogin(){
+  document.getElementById('login-error').style.display = 'none';
+  document.getElementById('login-email').value = '';
+  document.getElementById('login-password').value = '';
+  document.getElementById('login-screen').classList.remove('hidden');
+}
+
+async function validerConnexion(){
+  const email = document.getElementById('login-email').value.trim().toLowerCase();
+  const password = document.getElementById('login-password').value;
+  const errorEl = document.getElementById('login-error');
+  const btnEl = document.getElementById('login-submit-btn');
+  errorEl.style.display = 'none';
+
+  if(!email || !password){
+    errorEl.textContent = 'Entrez votre email et votre mot de passe';
+    errorEl.style.display = '';
+    return;
+  }
+
+  if(typeof firebase === 'undefined' || !fbAuth || typeof fbAuth.signInWithEmailAndPassword !== 'function'){
+    errorEl.textContent = '⚠️ Firebase non chargé — ouvrez cette page via un lien https:// (pas un fichier local)';
+    errorEl.style.display = '';
+    return;
+  }
+
+  btnEl.disabled = true;
+  btnEl.textContent = 'Connexion...';
+  try{
+    await fbAuth.signInWithEmailAndPassword(email, password);
+    // La suite (masquage écran login, application des rôles) est gérée par onAuthStateChanged
+  }catch(e){
+    console.error('Erreur de connexion:', e);
+    let msg = 'Email ou mot de passe incorrect';
+    if(e.code === 'auth/network-request-failed') msg = '📡 Pas de connexion — réessayez en ligne pour la première connexion';
+    if(e.code === 'auth/too-many-requests') msg = 'Trop de tentatives — réessayez plus tard';
+    const detail = e.code || e.name || (e.message ? e.message.substring(0,60) : 'erreur sans détail');
+    errorEl.textContent = msg + ' [' + detail + ']';
+    errorEl.style.display = '';
+  } finally {
+    btnEl.disabled = false;
+    btnEl.textContent = '✓ Se connecter';
+  }
+}
+
+function deconnexion(){
+  fbAuth.signOut();
+}
+
+// Écoute en continu l'état de connexion Firebase Auth.
+// Avec la persistance offline, une session déjà ouverte reste valide même hors-ligne.
+fbAuth.onAuthStateChanged((user)=>{
+  if(user){
+    const email = (user.email||'').toLowerCase();
+    const mapping = MAPPING_ROLES[email];
+    if(!mapping){
+      // Compte authentifié mais non reconnu dans le mapping → accès refusé proprement
+      showToast('⚠️ Compte non autorisé pour cette application');
+      fbAuth.signOut();
+      return;
+    }
+    profilActif = {email, ...mapping};
+    document.getElementById('login-screen').classList.add('hidden');
+    appliquerVisibiliteRoles();
+    showToast(`👋 Bienvenue, ${profilActif.nom}`);
+    demarrerApresConnexion();
+  } else {
+    profilActif = null;
+    afficherEcranLogin();
+  }
+});
+
+function appliquerVisibiliteRoles(){
+  if(!profilActif) return;
+  const badge = document.getElementById('role-badge');
+  if(badge) badge.textContent = `${profilActif.icone} ${profilActif.nom}`;
+
+  document.querySelectorAll('.nav-btn').forEach(btn=>{
+    const match = btn.getAttribute('onclick')?.match(/showPage\('([a-z]+)'/);
+    if(!match) return;
+    const pageId = match[1];
+    btn.style.display = peutVoirPage(pageId) ? '' : 'none';
+  });
+
+  const pageActive = document.querySelector('.page.active');
+  if(pageActive){
+    const idActif = pageActive.id.replace('page-','');
+    if(!peutVoirPage(idActif)){
+      showPage('dashboard', document.querySelector('.nav-btn'));
+    }
+  }
+}
+
+// Données dynamiques
+let pesees = [
+  {date:'2026-06-19',sexe:'M',sem:13,poids:2386,nb:31,unif:62.0,cv:17.4},
+  {date:'2026-06-19',sexe:'F',sem:13,poids:1679,nb:90,unif:74.0,cv:13.2},
+  {date:'2026-06-26',sexe:'M',sem:14,poids:2595,nb:30,unif:73.0,cv:13.4},
+  {date:'2026-06-26',sexe:'F',sem:14,poids:1779,nb:74,unif:76.0,cv:12.9},
+];
+let oeufs = [];
+let incubs = [];
+let vaccinLog = [];
+let santeLog = [];
+let mortalite = [];
+let finances = [{date:'19/03/2026',desc:'660 Poulettes Hubbard HEP',type:'Dépense',montant:4620000,cat:'Animaux'},{date:'19/03/2026',desc:'91 Coquelets M77 gratuits',type:'Recette',montant:0,cat:'Animaux'}];
+let effectifActuel = TOTAL_INIT;
+
+// ════════════════════════════════════════════════════════════
+// ===== PERSISTANCE FIREBASE (offline-first, multi-appareils) =====
+// ════════════════════════════════════════════════════════════
+// (config et initialisation Firebase déplacées en haut du script — voir début de fichier)
+
+const DB_ROOT = 'poultryevo-data'; // chemin racine dans la base
+let storageReady = false;
+let utilisateurFirebase = null;
+let dataRef = null;
+let suspendreEcoute = false; // évite les boucles infinies pendant qu'on écrit nous-même
+
+// Indicateur de connexion réseau réelle (Firebase expose .info/connected)
+fbDB.ref('.info/connected').on('value', (snap)=>{
+  const connecte = snap.val() === true;
+  afficherStatutReseau(connecte);
+});
+
+function afficherStatutReseau(connecte){
+  const el = document.getElementById('sync-status');
+  if(!el) return;
+  if(!connecte){
+    el.textContent = '📡 Hors ligne — sauvegarde locale';
+    el.className = 'sync-status sync-neu';
+  }
+}
+
+async function sauvegarderDonnees(){
+  if(!dataRef){ return; } // pas encore connecté
+  try{
+    const data = {pesees, oeufs, incubs, vaccinLog, santeLog, mortalite, finances, effectifActuel, lots, fournisseurs, mouvements};
+    suspendreEcoute = true;
+    // .set() en Realtime Database écrit immédiatement dans le cache local (persistance activée),
+    // et synchronise vers le serveur dès que la connexion est disponible — aucun blocage hors-ligne.
+    await dataRef.set(JSON.parse(JSON.stringify(data)));
+    afficherStatutSync('✓ Sauvegardé', 'ok');
+    renderTableauBordGlobal();
+  }catch(e){
+    console.error('Erreur sauvegarde Firebase:', e);
+    afficherStatutSync('⏳ En attente de connexion', 'neu');
+  } finally {
+    setTimeout(()=>{ suspendreEcoute = false; }, 300);
+  }
+}
+
+function chargerDonneesDepuis(data){
+  if(!data) return;
+  if(data.pesees && data.pesees.length) pesees = data.pesees;
+  if(data.oeufs) oeufs = data.oeufs;
+  if(data.incubs) incubs = data.incubs;
+  if(data.vaccinLog) vaccinLog = data.vaccinLog;
+  if(data.santeLog) santeLog = data.santeLog;
+  if(data.mortalite) mortalite = data.mortalite;
+  if(data.finances && data.finances.length) finances = data.finances;
+  if(data.effectifActuel) effectifActuel = data.effectifActuel;
+  if(data.lots) lots = data.lots;
+  if(data.fournisseurs) fournisseurs = data.fournisseurs;
+  if(data.mouvements) mouvements = data.mouvements;
+}
+
+// Charge les données une première fois, puis écoute les changements en continu
+// (si Ghislain modifie un lot depuis son téléphone, ça se met à jour ici automatiquement).
+function chargerDonnees(){
+  return new Promise((resolve)=>{
+    dataRef = fbDB.ref(DB_ROOT);
+    let premierChargement = true;
+    dataRef.on('value', (snapshot)=>{
+      if(suspendreEcoute && !premierChargement) return; // on ignore notre propre écriture en écho
+      const data = snapshot.val();
+      if(data){
+        chargerDonneesDepuis(data);
+        if(!premierChargement){
+          // Mise à jour venant d'un autre appareil/utilisateur — on rafraîchit l'affichage
+          rafraichirTousLesAffichages();
+          afficherStatutSync('🔄 Mis à jour (autre appareil)', 'ok');
+        } else {
+          afficherStatutSync('✓ Données restaurées', 'ok');
+        }
+      } else {
+        afficherStatutSync('Première utilisation', 'neu');
+      }
+      if(premierChargement){
+        premierChargement = false;
+        storageReady = true;
+        resolve();
+      }
+    }, (err)=>{
+      console.error('Erreur lecture Firebase:', err);
+      afficherStatutSync('⚠️ Lecture impossible', 'err');
+      storageReady = true;
+      resolve();
+    });
+  });
+}
+
+function rafraichirTousLesAffichages(){
+  renderPoidsTable(); renderPeseesList(); renderVaccinTable(); renderOeufsList();
+  renderCouvoirTable(); renderEngraissementTable(); renderVentesConsolide();
+  renderTableauBordGlobal(); renderSanteTimeline(); renderMortTable(); renderFinanceList();
+}
+
+function afficherStatutSync(msg, type){
+  const el = document.getElementById('sync-status');
+  if(!el) return;
+  el.textContent = msg;
+  el.className = 'sync-status sync-' + type;
+  if(type === 'ok'){
+    setTimeout(()=>{ if(el.textContent === msg) el.textContent = ''; }, 2500);
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+// ===== FONDATION DE DONNÉES : LOT · FOURNISSEUR · MOUVEMENT =====
+// ════════════════════════════════════════════════════════════
+// Architecture PoultryRevolution — entité centrale = Lot, reliée par code_lot_parent
+// Voir document "Architecture_PoultryRevolution" pour le schéma complet.
+
+let lots = [];          // {code_lot, type_lot, code_lot_parent, origine, date_creation, effectif_initial, effectif_actuel, statut}
+let fournisseurs = [];  // {code_origine, nom, contact, historique_qualite}
+let mouvements = [];    // {code_lot, module, type_mouvement, date, valeur, collaborateur}
+
+// --- Génération de code_lot : ORIGINE-AAMMJJ-NUMÉRO ---
+// origine : code court (ex: "TR" troupeau propre, "F1","F2"... fournisseur externe)
+function genererCodeLot(origine, dateISO){
+  const d = dateISO ? new Date(dateISO) : new Date();
+  const aa = String(d.getFullYear()).slice(2);
+  const mm = String(d.getMonth()+1).padStart(2,'0');
+  const jj = String(d.getDate()).padStart(2,'0');
+  const prefix = `${origine}-${aa}${mm}${jj}`;
+  const numerosExistants = lots
+    .filter(l => l.code_lot.startsWith(prefix))
+    .map(l => parseInt(l.code_lot.split('-').pop()) || 0);
+  const numero = (numerosExistants.length ? Math.max(...numerosExistants) : 0) + 1;
+  return `${prefix}-${String(numero).padStart(2,'0')}`;
+}
+
+// --- Créer un nouveau lot ---
+function creerLot({type_lot, code_lot_parent='', origine, date_creation, effectif_initial, statut='En cours'}){
+  const codeOrigine = origine === 'Troupeau propre' ? 'TR' : (origine || 'LOT');
+  const code_lot = genererCodeLot(codeOrigine, date_creation);
+  const lot = {
+    code_lot, type_lot, code_lot_parent, origine,
+    date_creation: date_creation || today(),
+    effectif_initial: effectif_initial || 0,
+    effectif_actuel: effectif_initial || 0,
+    statut,
+  };
+  lots.push(lot);
+  return lot;
+}
+
+// --- Enregistrer un mouvement et mettre à jour l'effectif du lot concerné ---
+function enregistrerMouvement({code_lot, module, type_mouvement, date, valeur, collaborateur='', impact_effectif=0}){
+  mouvements.push({code_lot, module, type_mouvement, date: date||today(), valeur, collaborateur});
+  if(impact_effectif !== 0){
+    const lot = lots.find(l => l.code_lot === code_lot);
+    if(lot) lot.effectif_actuel = Math.max(0, lot.effectif_actuel + impact_effectif);
+  }
+}
+
+// --- Remonter toute la chaîne de traçabilité d'un lot (parents) ---
+function remonterChaine(code_lot){
+  const chaine = [];
+  let courant = lots.find(l => l.code_lot === code_lot);
+  while(courant){
+    chaine.push(courant);
+    if(!courant.code_lot_parent) break;
+    courant = lots.find(l => l.code_lot === courant.code_lot_parent);
+  }
+  return chaine; // [lot_actuel, parent, grand-parent, ...]
+}
+
+// --- Trouver tous les lots enfants directs d'un lot ---
+function trouverEnfants(code_lot){
+  return lots.filter(l => l.code_lot_parent === code_lot);
+}
+
+// --- KPI génériques calculés depuis Mouvement, filtrés par lot ---
+function kpiLot(code_lot){
+  const mvts = mouvements.filter(m => m.code_lot === code_lot);
+  const mortalites = mvts.filter(m => m.type_mouvement === 'Mortalité').reduce((s,m)=>s+(m.valeur||0),0);
+  const lot = lots.find(l => l.code_lot === code_lot);
+  const tauxMortalite = lot && lot.effectif_initial ? (mortalites/lot.effectif_initial*100) : 0;
+  return { mortalites, tauxMortalite, nbMouvements: mvts.length };
+}
+
+// --- Créer ou retrouver un fournisseur ---
+function obtenirOuCreerFournisseur(nom, contact=''){
+  let f = fournisseurs.find(x => x.nom.toLowerCase() === nom.toLowerCase());
+  if(!f){
+    const numero = fournisseurs.length + 1;
+    f = {code_origine: 'F'+numero, nom, contact, historique_qualite: null};
+    fournisseurs.push(f);
+  }
+  return f;
+}
+
+// --- Historique qualité d'un fournisseur : taux d'éclosion moyen de ses lots livrés ---
+function recalculerHistoriqueFournisseur(code_origine){
+  const lotsLivres = lots.filter(l => l.origine === code_origine && l.type_lot === 'Œufs');
+  const tauxList = lotsLivres
+    .map(l => {
+      const eclosion = mouvements.find(m => m.code_lot === l.code_lot && m.type_mouvement === 'Éclosion');
+      return eclosion && l.effectif_initial ? (eclosion.valeur / l.effectif_initial * 100) : null;
+    })
+    .filter(t => t !== null);
+  const f = fournisseurs.find(x => x.code_origine === code_origine);
+  if(f) f.historique_qualite = tauxList.length ? (tauxList.reduce((a,b)=>a+b,0)/tauxList.length) : null;
+}
+
+// --- Lot rétrospectif du troupeau reproducteur HEP-2026 ---
+// Code fixe (non généré dynamiquement) : ce lot existait avant l'introduction du système Lot/Mouvement.
+const CODE_LOT_TROUPEAU_HEP2026 = 'TR-260319-01';
+
+function assurerLotTroupeauHEP2026(){
+  let lot = lots.find(l => l.code_lot === CODE_LOT_TROUPEAU_HEP2026);
+  if(!lot){
+    lot = {
+      code_lot: CODE_LOT_TROUPEAU_HEP2026,
+      type_lot: 'Reproducteur',
+      code_lot_parent: '',
+      origine: 'Troupeau propre',
+      date_creation: '2026-03-19',
+      effectif_initial: TOTAL_INIT,
+      effectif_actuel: effectifActuel,
+      statut: 'En cours',
+      detail: {femelles_initial: FEMELLES, males_initial: MALES},
+    };
+    lots.push(lot);
+
+    // Migration rétroactive : les mortalités déjà enregistrées dans l'ancien tableau `mortalite`
+    // deviennent des Mouvement rattachés à ce lot (sans dupliquer si déjà migré).
+    mortalite.forEach(m=>{
+      const dejaMigre = mouvements.some(mv => mv.code_lot===CODE_LOT_TROUPEAU_HEP2026 && mv.type_mouvement==='Mortalité' && mv.date===m.date && mv.valeur===m.nb);
+      if(!dejaMigre){
+        mouvements.push({code_lot:CODE_LOT_TROUPEAU_HEP2026, module:'Troupeau', type_mouvement:'Mortalité', date:m.date, valeur:m.nb, collaborateur:m.cause||''});
+      }
+    });
+
+    sauvegarderDonnees();
+  } else {
+    // Lot déjà existant : on garde son effectif_actuel synchronisé avec la variable globale historique
+    lot.effectif_actuel = effectifActuel;
+  }
+  return lot;
+}
+
+// ===== UTILS =====
+function today() { return new Date().toISOString().split('T')[0]; }
+function ageJours() { return Math.floor((new Date()-ARRIVEE)/(1000*60*60*24)); }
+function ageSem() { return Math.floor(ageJours()/7); }
+function phaseActuelle(s) {
+  if(s<18) return 'Poussinière';
+  if(s<22) return 'Transition';
+  if(s<25) return 'Préponte';
+  if(s<65) return 'Production';
+  return 'Réforme';
+}
+function fmt(n){return n.toLocaleString('fr-FR')}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3500);
+}
+
+// ===== NAV =====
+function showPage(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  if(btn&&btn.classList) btn.classList.add('active');
+}
+
+// ===== MODALS =====
+function openModal(id){
+  document.getElementById(id).classList.add('open');
+  const d=today();
+  document.querySelectorAll('#'+id+' input[type=date]').forEach(el=>{if(!el.value)el.value=d;});
+}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-ov').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
+
+// ===== INIT SIDEBAR =====
+function updateSidebar(){
+  const j=ageJours();const s=ageSem();
+  document.getElementById('sidebar-age').textContent='J'+j+' (S'+s+')';
+  document.getElementById('sidebar-phase').textContent=phaseActuelle(s);
+  document.getElementById('d-age').textContent='J'+j;
+  document.getElementById('d-semaine').textContent='Semaine '+s;
+  const dn=new Date();
+  document.getElementById('hDate').textContent=dn.toLocaleDateString('fr-FR',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+}
+
+// ===== POIDS TABLE =====
+function renderPoidsTable(){
+  const j=ageJours();
+  const tbody=document.getElementById('poids-table');
+  tbody.innerHTML=POIDS_OBJ.map(r=>{
+    const passed=j>r.j;
+    const current=j>=r.j-7&&j<r.j;
+    const alimBadge=r.alim==='Démarrage'?'b-bl':r.alim==='Croissance'?'b-gr':'b-o';
+    const peseesSem=pesees.filter(p=>p.sem==r.s);
+    const realM=peseesSem.find(p=>p.sexe==='M');
+    const realF=peseesSem.find(p=>p.sexe==='F');
+    let realStr='<span style="color:var(--gris)">—</span>';
+    if(realM||realF){
+      realStr='';
+      if(realM)realStr+=`<div style="color:${realM.poids>=r.poids*0.95?'var(--vert)':'var(--rouge)'}">♂ <strong>${realM.poids}g</strong></div>`;
+      if(realF)realStr+=`<div style="color:${realF.poids>=r.poids*0.95?'var(--vert)':'var(--rouge)'}">♀ <strong>${realF.poids}g</strong></div>`;
+    }
+    return`<tr style="${current?'background:rgba(200,146,42,0.08)':''} ${passed?'opacity:0.7':''}">
+      <td style="font-weight:700">${passed?'✓':current?'▶':''} S${r.s}</td>
+      <td style="font-family:'JetBrains Mono',monospace">J${r.j}</td>
+      <td style="font-weight:700">${r.poids.toLocaleString()}</td>
+      <td style="color:var(--gris)">${r.croiss||'ad lib'}</td>
+      <td>${r.ration}</td>
+      <td>${r.em}</td>
+      <td><span class="badge ${alimBadge}">${r.alim}</span></td>
+      <td>${realStr}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ===== VACCIN TABLES =====
+function renderVaccinTable(){
+  const tbody=document.getElementById('vacc-table');
+  tbody.innerHTML=VACCINS.map(v=>{
+    const statBadge=v.fait?'<span class="badge b-g">✓ Fait</span>':v.urgent?'<span class="badge b-r">⚠️ Urgent</span>':'<span class="badge b-gr">À venir</span>';
+    const actionBtn=v.fait?'—':`<button class="btn" style="padding:0.25rem 0.6rem;font-size:0.7rem;background:var(--or);color:var(--ink)" onclick="marquerVaccin('${v.maladie}')">Marquer fait</button>`;
+    return`<tr>
+      <td style="font-family:'JetBrains Mono',monospace;font-size:0.75rem">${v.age}<br><span style="color:var(--gris);font-size:0.65rem">${v.date}</span></td>
+      <td><span class="badge b-gr" style="font-size:0.62rem">${v.stade}</span></td>
+      <td style="font-weight:600">${v.maladie}</td>
+      <td style="font-size:0.75rem;color:var(--gris)">${v.vaccin}</td>
+      <td style="font-size:0.75rem">${v.voie}</td>
+      <td>${statBadge}</td>
+      <td>${actionBtn}</td>
+    </tr>`;
+  }).join('');
+
+  // Statut
+  const doneList=VACCINS.filter(v=>v.fait);
+  const urgList=VACCINS.filter(v=>!v.fait&&v.urgent);
+  const upList=VACCINS.filter(v=>!v.fait&&!v.urgent).slice(0,4);
+
+  document.getElementById('vacc-status').innerHTML=doneList.map(v=>`
+    <div class="vacc-row"><div class="vacc-dot v-done"></div><div><div style="font-size:0.82rem;font-weight:600">${v.maladie}</div><div style="font-size:0.72rem;color:var(--gris)">${v.date} · ${v.voie}</div></div><span class="badge b-g" style="margin-left:auto">✓</span></div>
+  `).join('');
+
+  const urgDiv=document.getElementById('vacc-urgent');
+  urgDiv.innerHTML=urgList.map(v=>`
+    <div class="vacc-row"><div class="vacc-dot v-urgent"></div><div><div style="font-size:0.82rem;font-weight:700;color:var(--rouge)">${v.maladie}</div><div style="font-size:0.72rem;color:var(--gris)">${v.age} · ${v.date} · ${v.vaccin}</div></div></div>
+  `).join('')+(upList.map(v=>`
+    <div class="vacc-row"><div class="vacc-dot v-upcoming"></div><div><div style="font-size:0.82rem;font-weight:600">${v.maladie}</div><div style="font-size:0.72rem;color:var(--gris)">${v.age} · ${v.date}</div></div></div>
+  `).join(''));
+
+  // Dashboard prochain vaccin
+  const dash=document.getElementById('prochain-vaccin');
+  if(dash){dash.innerHTML=urgList.concat(upList.slice(0,2)).map(v=>`
+    <div class="vacc-row"><div class="vacc-dot ${v.urgent?'v-urgent':'v-upcoming'}"></div><div><div style="font-size:0.82rem;font-weight:${v.urgent?'700':'500'};color:${v.urgent?'var(--rouge)':'var(--ink)'}">${v.maladie}</div><div style="font-size:0.72rem;color:var(--gris)">${v.age} · ${v.date}</div></div></div>
+  `).join('');}
+}
+
+function marquerVaccin(maladie){
+  const v=VACCINS.find(x=>x.maladie===maladie);
+  if(v){v.fait=true;v.date=today();renderVaccinTable();showToast('✅ '+maladie+' marqué comme fait !');}
+}
+
+// ===== ACTIONS =====
+function addPesee(){
+  const date=document.getElementById('p-date').value;
+  const sexe=document.getElementById('p-sexe').value;
+  const sem=parseInt(document.getElementById('p-sem').value)||ageSem();
+  const poids=parseInt(document.getElementById('p-poids').value)||0;
+  const nb=parseInt(document.getElementById('p-nb').value)||0;
+  const unif=parseFloat(document.getElementById('p-unif').value)||0;
+  const cv=parseFloat(document.getElementById('p-cv').value)||0;
+  if(!poids){showToast('⚠️ Entrez le poids moyen');return;}
+  pesees.push({date,sexe,sem,poids,nb,unif,cv});
+  // Connexion discrète au système Lot/Mouvement (n'affecte pas l'écran existant)
+  enregistrerMouvement({code_lot:CODE_LOT_TROUPEAU_HEP2026, module:'Troupeau', type_mouvement:'Pesée '+(sexe==='M'?'Mâles':'Femelles'), date, valeur:poids, collaborateur:'nb:'+nb+(cv?' cv:'+cv:'')});
+  sauvegarderDonnees();
+  renderPoidsTable();
+  renderPeseesList();
+  const obj=POIDS_OBJ.find(r=>r.s==sem);
+  const diff=obj?poids-obj.poids:0;
+  closeModal('m-pesee');
+  showToast(`⚖️ ${sexe==='M'?'♂':'♀'} S${sem}: ${poids}g enregistré (${diff>=0?'+':''}${diff}g vs obj.)`);
+}
+
+function renderPeseesList(){
+  document.getElementById('pesees-list').innerHTML=pesees.slice().reverse().map(p=>{
+    const o=POIDS_OBJ.find(r=>r.s==p.sem);
+    const diff2=o?p.poids-o.poids:0;
+    const sexeIcon=p.sexe==='M'?'♂':p.sexe==='F'?'♀':'';
+    const cvBadge=p.cv?`<span class="badge ${p.cv<10?'b-g':p.cv<15?'b-o':'b-r'}" style="margin-left:6px">CV ${p.cv}%</span>`:'';
+    return`<div style="padding:0.65rem;background:var(--sable);border-radius:8px;margin-bottom:0.5rem;display:flex;justify-content:space-between;font-size:0.82rem">
+      <div><strong>${sexeIcon} S${p.sem}</strong> — ${p.date}<div style="font-size:0.72rem;color:var(--gris)">${p.nb} sujets · Uniformité: ${p.unif}%${cvBadge}</div></div>
+      <div style="text-align:right"><strong>${p.poids}g</strong><div style="font-size:0.72rem;color:${diff2>=0?'var(--vert)':'var(--rouge)'}">${diff2>=0?'+':''}${diff2}g vs obj.</div></div>
+    </div>`;
+  }).join('');
+}
+
+function addOeuf(){
+  const date=document.getElementById('o-date').value;
+  const mat=parseInt(document.getElementById('o-mat').value)||0;
+  const soir=parseInt(document.getElementById('o-soir').value)||0;
+  const cas=parseInt(document.getElementById('o-cas').value)||0;
+  const total=mat+soir;
+  const taux=((total/FEMELLES)*100).toFixed(1);
+  oeufs.push({date,mat,soir,cas,total,taux});
+  sauvegarderDonnees();
+  closeModal('m-oeuf');
+  showToast(`🥚 ${total} œufs enregistrés (taux ${taux}%)`);
+  renderOeufsList();
+}
+function renderOeufsList(){
+  document.getElementById('oeufs-list').innerHTML=oeufs.slice().reverse().map(o=>`
+    <div style="padding:0.65rem;background:var(--sable);border-radius:8px;margin-bottom:0.4rem;display:flex;justify-content:space-between;font-size:0.82rem">
+      <div><strong>${o.date}</strong> — ${o.total} œufs<div style="font-size:0.72rem;color:var(--gris)">Matin:${o.mat} · Soir:${o.soir} · Cassés:${o.cas}</div></div>
+      <div style="text-align:right"><span class="badge ${o.taux>=65?'b-g':'b-o'}">${o.taux}%</span></div>
+    </div>
+  `).join('');
+}
+
+// ════════════════════════════════════════════════════════════
+// ===== MODULE COUVOIR =====
+// ════════════════════════════════════════════════════════════
+
+function addFournisseur(){
+  const nom=document.getElementById('f-nom').value.trim();
+  const contact=document.getElementById('f-contact').value.trim();
+  if(!nom){showToast('⚠️ Entrez le nom du fournisseur');return;}
+  const f=obtenirOuCreerFournisseur(nom, contact);
+  sauvegarderDonnees();
+  closeModal('m-fournisseur');
+  showToast(`🏭 Fournisseur ${f.code_origine} — ${nom} enregistré`);
+  renderFournisseursList();
+  remplirOptionsOrigine();
+}
+
+function remplirOptionsOrigine(){
+  const sel=document.getElementById('r-origine');
+  if(!sel) return;
+  const valeurActuelle=sel.value;
+  sel.innerHTML = '<option value="Troupeau propre">🏠 Troupeau propre (TR)</option>' +
+    fournisseurs.map(f=>`<option value="${f.nom}">🚚 ${f.nom} (${f.code_origine})</option>`).join('');
+  if([...sel.options].some(o=>o.value===valeurActuelle)) sel.value=valeurActuelle;
+}
+
+function addReceptionOeufs(){
+  const origine=document.getElementById('r-origine').value;
+  const date=document.getElementById('r-date').value||today();
+  const nb=parseInt(document.getElementById('r-nb').value)||0;
+  const poids=parseFloat(document.getElementById('r-poids').value)||0;
+  const machine=document.getElementById('r-machine').value;
+  const obs=document.getElementById('r-obs').value;
+  if(!nb){showToast('⚠️ Entrez le nombre d\'œufs reçus');return;}
+
+  const code_lot_parent = origine === 'Troupeau propre' ? CODE_LOT_TROUPEAU_HEP2026 : '';
+  const lot=creerLot({type_lot:'Œufs', code_lot_parent, origine, date_creation:date, effectif_initial:nb, statut:'Incubation'});
+  lot.machine=machine; lot.poids_moyen_oeuf=poids; lot.obs=obs;
+  enregistrerMouvement({code_lot:lot.code_lot, module:'Couvoir', type_mouvement:'Réception', date, valeur:nb, collaborateur:''});
+
+  sauvegarderDonnees();
+  closeModal('m-reception');
+  showToast(`🥚 Lot ${lot.code_lot} créé — ${nb} œufs reçus`);
+  renderCouvoirTable();
+  remplirSelectsLots();
+}
+
+function addMirage(){
+  const code_lot=document.getElementById('mi-lot').value;
+  const etape=document.getElementById('mi-etape').value;
+  const date=document.getElementById('mi-date').value||today();
+  const retires=parseInt(document.getElementById('mi-retires').value)||0;
+  if(!code_lot){showToast('⚠️ Sélectionnez un lot');return;}
+
+  enregistrerMouvement({code_lot, module:'Couvoir', type_mouvement:'Mirage '+etape, date, valeur:retires, collaborateur:'', impact_effectif:-retires});
+
+  sauvegarderDonnees();
+  closeModal('m-mirage');
+  showToast(`🔍 Mirage ${etape} enregistré — ${retires} œufs retirés du lot ${code_lot}`);
+  renderCouvoirTable();
+}
+
+function addEclosion(){
+  const code_lot=document.getElementById('ec-lot').value;
+  const date=document.getElementById('ec-date').value||today();
+  const nbPoussins=parseInt(document.getElementById('ec-nb').value)||0;
+  const obs=document.getElementById('ec-obs').value;
+  if(!code_lot){showToast('⚠️ Sélectionnez un lot');return;}
+
+  const lot=lots.find(l=>l.code_lot===code_lot);
+  enregistrerMouvement({code_lot, module:'Couvoir', type_mouvement:'Éclosion', date, valeur:nbPoussins, collaborateur:''});
+  if(lot){
+    lot.statut='Terminé';
+    lot.date_eclosion=date;
+    lot.nb_poussins=nbPoussins;
+    if(lot.origine !== 'Troupeau propre') recalculerHistoriqueFournisseur(fournisseurs.find(f=>f.nom===lot.origine)?.code_origine);
+  }
+
+  sauvegarderDonnees();
+  closeModal('m-eclosion');
+  const taux = lot && lot.effectif_initial ? (nbPoussins/lot.effectif_initial*100).toFixed(1) : '—';
+  showToast(`🐣 Lot ${code_lot} clôturé — ${nbPoussins} poussins (${taux}%)`);
+  renderCouvoirTable();
+  renderFournisseursList();
+  remplirSelectsLots();
+}
+
+function remplirSelectsLots(){
+  const lotsActifs = lots.filter(l => l.type_lot === 'Œufs' && l.statut !== 'Terminé');
+  const optionsHTML = lotsActifs.map(l=>`<option value="${l.code_lot}">${l.code_lot} (${l.effectif_actuel} œufs)</option>`).join('') || '<option value="">Aucun lot actif</option>';
+  ['mi-lot','ec-lot'].forEach(id=>{
+    const sel=document.getElementById(id);
+    if(sel) sel.innerHTML = optionsHTML;
+  });
+}
+
+function renderFournisseursList(){
+  const el=document.getElementById('fournisseurs-list');
+  if(!el) return;
+  if(!fournisseurs.length){
+    el.innerHTML='<div style="color:var(--gris);font-size:0.82rem;padding:1rem;text-align:center">Aucun fournisseur externe enregistré. Le troupeau propre (TR) est toujours disponible par défaut.</div>';
+  } else {
+    el.innerHTML = fournisseurs.map(f=>{
+      const qualite = f.historique_qualite !== null && f.historique_qualite !== undefined ? f.historique_qualite.toFixed(1)+'%' : '—';
+      const badgeClass = f.historique_qualite >= 85 ? 'b-g' : f.historique_qualite >= 70 ? 'b-o' : 'b-r';
+      return `<div style="padding:0.65rem;background:var(--sable);border-radius:8px;margin-bottom:0.4rem;display:flex;justify-content:space-between;font-size:0.82rem">
+        <div><strong>${f.nom}</strong> <span style="color:var(--gris);font-size:0.72rem">(${f.code_origine})</span><div style="font-size:0.72rem;color:var(--gris)">${f.contact||'Pas de contact enregistré'}</div></div>
+        <span class="badge ${f.historique_qualite!=null?badgeClass:'b-gr'}">Éclosion moy. ${qualite}</span>
+      </div>`;
+    }).join('');
+  }
+  document.getElementById('couv-nb-fournisseurs').textContent = fournisseurs.length;
+}
+
+function renderCouvoirTable(){
+  const tbody=document.getElementById('couvoir-lots-table');
+  if(!tbody) return;
+  const lotsOeufs = lots.filter(l => l.type_lot === 'Œufs').slice().reverse();
+
+  if(!lotsOeufs.length){
+    tbody.innerHTML='<tr><td colspan="10" style="text-align:center;color:var(--gris);padding:1rem">Aucun lot en cours. Cliquez sur "+ Réception Œufs" pour commencer.</td></tr>';
+  } else {
+    tbody.innerHTML = lotsOeufs.map(l=>{
+      const mvts = mouvements.filter(m=>m.code_lot===l.code_lot);
+      const mJ7 = mvts.find(m=>m.type_mouvement==='Mirage J7');
+      const mJ18 = mvts.find(m=>m.type_mouvement==='Mirage J18');
+      const mEc = mvts.find(m=>m.type_mouvement==='Éclosion');
+      const taux = mEc && l.effectif_initial ? (mEc.valeur/l.effectif_initial*100).toFixed(1)+'%' : '—';
+      const statutBadge = l.statut==='Terminé' ? '<span class="badge b-g">✓ Terminé</span>' : '<span class="badge b-o">🔆 En incubation</span>';
+      const dejaTransfere = lots.some(le => le.code_lot_parent === l.code_lot);
+      let actionCell = '';
+      if(l.statut !== 'Terminé'){
+        actionCell = `<button class="btn btn-o" style="padding:0.3rem 0.6rem;font-size:0.7rem" onclick="document.getElementById('mi-lot').value='${l.code_lot}';openModal('m-mirage')">Mirage</button>`;
+      } else if(dejaTransfere){
+        actionCell = '<span class="badge b-bl">→ Transféré</span>';
+      } else if(l.nb_poussins > 0){
+        actionCell = `<button class="btn btn-p" style="padding:0.3rem 0.6rem;font-size:0.7rem" onclick="transfererEnEngraissement('${l.code_lot}')">→ Engraissement</button>`;
+      }
+      return `<tr>
+        <td style="font-family:'JetBrains Mono',monospace;font-weight:600;font-size:0.78rem">${l.code_lot}</td>
+        <td>${l.origine==='Troupeau propre'?'🏠 TR':'🚚 '+l.origine}</td>
+        <td style="font-size:0.78rem">${l.date_creation}</td>
+        <td>${l.effectif_initial}</td>
+        <td>${mJ7?'-'+mJ7.valeur:'—'}</td>
+        <td>${mJ18?'-'+mJ18.valeur:'—'}</td>
+        <td style="font-weight:700;color:var(--vert)">${mEc?mEc.valeur:'—'}</td>
+        <td style="font-weight:700">${taux}</td>
+        <td>${statutBadge}</td>
+        <td>${actionCell}</td>
+      </tr>`;
+    }).join('');
+  }
+
+  // Stats globales
+  document.getElementById('couv-lots-actifs').textContent = lots.filter(l=>l.type_lot==='Œufs' && l.statut!=='Terminé').length;
+  document.getElementById('couv-total-recus').textContent = fmt(lots.filter(l=>l.type_lot==='Œufs').reduce((s,l)=>s+l.effectif_initial,0));
+  const lotsTermines = lots.filter(l=>l.type_lot==='Œufs' && l.statut==='Terminé' && l.nb_poussins!==undefined);
+  if(lotsTermines.length){
+    const tauxMoyen = lotsTermines.reduce((s,l)=>s+(l.nb_poussins/l.effectif_initial*100),0)/lotsTermines.length;
+    document.getElementById('couv-taux-eclosion').textContent = tauxMoyen.toFixed(1)+'%';
+  } else {
+    document.getElementById('couv-taux-eclosion').textContent = '—';
+  }
+
+  renderFournisseursList();
+  remplirSelectsLots();
+}
+
+// ════════════════════════════════════════════════════════════
+// ===== MODULE ENGRAISSEMENT =====
+// ════════════════════════════════════════════════════════════
+
+// Trajectoire de référence — poids cumulé cible (g) par jour d'âge, objectif final ≥ 3000g à J56
+const TRAJECTOIRE_ENGRAISSEMENT = [
+  {j:7, poids:180}, {j:14, poids:430}, {j:21, poids:800}, {j:28, poids:1250},
+  {j:35, poids:1750}, {j:42, poids:2250}, {j:49, poids:2700}, {j:56, poids:3000},
+];
+
+function poidsCibleAJour(j){
+  // Interpolation linéaire entre les points de la trajectoire
+  if(j <= 0) return 42; // poids poussin 1 jour approx.
+  if(j >= 56) return 3000;
+  let prev = {j:0, poids:42};
+  for(const pt of TRAJECTOIRE_ENGRAISSEMENT){
+    if(j <= pt.j){
+      const ratio = (j - prev.j) / (pt.j - prev.j);
+      return Math.round(prev.poids + ratio * (pt.poids - prev.poids));
+    }
+    prev = pt;
+  }
+  return 3000;
+}
+
+function ageEnJours(dateCreationISO){
+  const d1 = new Date(dateCreationISO);
+  const d2 = new Date();
+  return Math.max(0, Math.round((d2 - d1) / 86400000));
+}
+
+function transfererEnEngraissement(code_lot_parent){
+  const parent = lots.find(l=>l.code_lot===code_lot_parent);
+  if(!parent || !parent.nb_poussins){ showToast('⚠️ Lot introuvable ou sans poussins éclos'); return; }
+  document.getElementById('er-provenance').value = 'couvoir';
+  document.getElementById('er-provenance').disabled = true;
+  toggleProvenanceEngr();
+  const sel = document.getElementById('er-lot-parent');
+  sel.innerHTML = `<option value="${parent.code_lot}">${parent.code_lot} — ${parent.nb_poussins} poussins (éclos le ${parent.date_eclosion})</option>`;
+  sel.value = parent.code_lot;
+  sel.disabled = true; // Le lot parent est imposé par le bouton "Transférer" — pas de ressaisie manuelle
+  document.getElementById('er-effectif').value = parent.nb_poussins;
+  document.getElementById('er-date').value = today();
+  afficherPreviewTracabilite();
+  openModal('m-engr-reception');
+}
+
+function ouvrirReceptionEngraissement(){
+  // Accès direct (sans transfert) : on réactive les champs verrouillés par un éventuel transfert précédent
+  document.getElementById('er-provenance').disabled = false;
+  const sel = document.getElementById('er-lot-parent');
+  sel.disabled = false;
+  document.getElementById('er-effectif').value = '';
+  // Remplir la liste des lots Poussins disponibles (issus du Couvoir, non encore transférés)
+  const lotsPoussinsDisponibles = lots.filter(l =>
+    l.type_lot === 'Œufs' && l.statut === 'Terminé' && l.nb_poussins > 0 &&
+    !lots.some(le => le.code_lot_parent === l.code_lot)
+  );
+  sel.innerHTML = lotsPoussinsDisponibles.length
+    ? lotsPoussinsDisponibles.map(l=>`<option value="${l.code_lot}">${l.code_lot} — ${l.nb_poussins} poussins (éclos le ${l.date_eclosion})</option>`).join('')
+    : '<option value="">Aucun lot de poussins disponible</option>';
+  toggleProvenanceEngr();
+  openModal('m-engr-reception');
+}
+
+function toggleProvenanceEngr(){
+  const provenance = document.getElementById('er-provenance').value;
+  document.getElementById('er-lot-parent-wrap').style.display = provenance==='couvoir' ? '' : 'none';
+  document.getElementById('er-origine-externe-wrap').style.display = provenance==='externe' ? '' : 'none';
+  afficherPreviewTracabilite();
+}
+
+function afficherPreviewTracabilite(){
+  const provenance = document.getElementById('er-provenance').value;
+  const preview = document.getElementById('er-tracabilite-preview');
+  if(provenance === 'couvoir'){
+    const codeParent = document.getElementById('er-lot-parent').value;
+    const chaine = codeParent ? remonterChaine(codeParent) : [];
+    if(chaine.length){
+      preview.style.display='';
+      preview.innerHTML = '🔗 <strong>Traçabilité :</strong> ' + chaine.map(l=>l.code_lot).join(' ← ');
+    } else {
+      preview.style.display='none';
+    }
+  } else {
+    preview.style.display='none';
+  }
+}
+
+function addReceptionEngraissement(){
+  const provenance = document.getElementById('er-provenance').value;
+  const date = document.getElementById('er-date').value || today();
+  const effectif = parseInt(document.getElementById('er-effectif').value)||0;
+  const poidsInit = parseFloat(document.getElementById('er-poids-init').value)||0;
+  if(!effectif){ showToast('⚠️ Entrez l\'effectif reçu'); return; }
+
+  let code_lot_parent = '';
+  let origine = '';
+  if(provenance === 'couvoir'){
+    code_lot_parent = document.getElementById('er-lot-parent').value;
+    if(!code_lot_parent){ showToast('⚠️ Sélectionnez un lot de poussins d\'origine'); return; }
+    const parent = lots.find(l=>l.code_lot===code_lot_parent);
+    origine = parent ? parent.origine : 'Couvoir';
+  } else {
+    origine = document.getElementById('er-origine-externe').value.trim() || 'Achat externe';
+  }
+
+  const lot = creerLot({type_lot:'Engraissement', code_lot_parent, origine, date_creation:date, effectif_initial:effectif, statut:'En cours'});
+  lot.poids_initial = poidsInit;
+  enregistrerMouvement({code_lot:lot.code_lot, module:'Engraissement', type_mouvement:'Réception', date, valeur:effectif});
+
+  sauvegarderDonnees();
+  document.getElementById('er-lot-parent').disabled = false;
+  closeModal('m-engr-reception');
+  showToast(`🍗 Lot ${lot.code_lot} créé — ${effectif} sujets en engraissement`);
+  renderEngraissementTable();
+  remplirSelectsEngraissement();
+}
+
+function remplirSelectsEngraissement(){
+  const lotsActifs = lots.filter(l => l.type_lot === 'Engraissement' && l.statut === 'En cours');
+  const optionsHTML = lotsActifs.map(l=>`<option value="${l.code_lot}">${l.code_lot} (${l.effectif_actuel} sujets)</option>`).join('') || '<option value="">Aucun lot actif</option>';
+  ['eq-lot','ep-lot','ev-lot'].forEach(id=>{
+    const selEl=document.getElementById(id);
+    if(selEl) selEl.innerHTML = optionsHTML;
+  });
+}
+
+function addControleQuotidienEngr(){
+  const code_lot = document.getElementById('eq-lot').value;
+  const date = document.getElementById('eq-date').value || today();
+  const mortalite = parseInt(document.getElementById('eq-mortalite').value)||0;
+  const aliment = parseFloat(document.getElementById('eq-aliment').value)||0;
+  const eau = document.getElementById('eq-eau').value;
+  const obs = document.getElementById('eq-obs').value;
+  if(!code_lot){ showToast('⚠️ Sélectionnez un lot'); return; }
+
+  if(mortalite>0) enregistrerMouvement({code_lot, module:'Engraissement', type_mouvement:'Mortalité', date, valeur:mortalite, impact_effectif:-mortalite});
+  if(aliment>0) enregistrerMouvement({code_lot, module:'Engraissement', type_mouvement:'Alimentation', date, valeur:aliment});
+  enregistrerMouvement({code_lot, module:'Engraissement', type_mouvement:'Contrôle quotidien', date, valeur:0, collaborateur:`Eau:${eau}${obs?' · '+obs:''}`});
+
+  sauvegarderDonnees();
+  closeModal('m-engr-quotidien');
+  showToast(`📋 Contrôle ${code_lot} enregistré`);
+  renderEngraissementTable();
+}
+
+function addPeseeEngraissement(){
+  const code_lot = document.getElementById('ep-lot').value;
+  const date = document.getElementById('ep-date').value || today();
+  const poids = parseFloat(document.getElementById('ep-poids').value)||0;
+  const nb = parseInt(document.getElementById('ep-nb').value)||0;
+  if(!code_lot){ showToast('⚠️ Sélectionnez un lot'); return; }
+  if(!poids){ showToast('⚠️ Entrez le poids moyen'); return; }
+
+  enregistrerMouvement({code_lot, module:'Engraissement', type_mouvement:'Pesée', date, valeur:poids, collaborateur:'nb:'+nb});
+
+  const lot = lots.find(l=>l.code_lot===code_lot);
+  const age = lot ? ageEnJours(lot.date_creation) : 0;
+  const cible = poidsCibleAJour(age);
+  const ecart = cible ? ((poids - cible)/cible*100) : 0;
+
+  sauvegarderDonnees();
+  closeModal('m-engr-pesee');
+  if(Math.abs(ecart) > 10){
+    showToast(`⚠️ ${code_lot} : écart de ${ecart>=0?'+':''}${ecart.toFixed(0)}% vs trajectoire (cible J${age}: ${cible}g)`);
+  } else {
+    showToast(`⚖️ Pesée enregistrée : ${poids}g (cible J${age}: ${cible}g)`);
+  }
+  renderEngraissementTable();
+}
+
+function addVenteEngraissement(){
+  const code_lot = document.getElementById('ev-lot').value;
+  const date = document.getElementById('ev-date').value || today();
+  const nb = parseInt(document.getElementById('ev-nb').value)||0;
+  const poidsTotal = parseFloat(document.getElementById('ev-poids-total').value)||0;
+  const prixKg = parseFloat(document.getElementById('ev-prix-kg').value)||0;
+  const acheteur = document.getElementById('ev-acheteur').value.trim();
+  if(!code_lot){ showToast('⚠️ Sélectionnez un lot'); return; }
+  if(!nb || !poidsTotal){ showToast('⚠️ Entrez le nombre et le poids vendus'); return; }
+
+  const montantTotal = Math.round(poidsTotal * prixKg);
+  const lot = lots.find(l=>l.code_lot===code_lot);
+
+  enregistrerMouvement({code_lot, module:'Engraissement', type_mouvement:'Vente', date, valeur:nb, collaborateur:acheteur, impact_effectif:-nb});
+  if(lot){
+    lot.statut = lot.effectif_actuel - nb <= 0 ? 'Vendu' : 'En cours';
+    lot.ventes = lot.ventes || [];
+    lot.ventes.push({date, nb, poidsTotal, prixKg, montantTotal, acheteur});
+  }
+
+  finances.push({date, type:'Recette', desc:`Vente ${nb} sujets — Lot ${code_lot}`, montant:montantTotal, cat:'Vente Engraissement'});
+
+  sauvegarderDonnees();
+  closeModal('m-engr-vente');
+  showToast(`🧾 Vente enregistrée : ${fmt(montantTotal)} FCFA`);
+  renderEngraissementTable();
+  renderFinanceList();
+  afficherBonDeVente(code_lot, {date, nb, poidsTotal, prixKg, montantTotal, acheteur});
+}
+
+function afficherBonDeVente(code_lot, vente){
+  const chaine = remonterChaine(code_lot);
+  const chaineHTML = chaine.map(l=>`<span class="badge b-bl">${l.code_lot}</span>`).join(' ← ');
+  const poidsUnitMoyen = vente.nb ? (vente.poidsTotal/vente.nb).toFixed(2) : '0';
+  document.getElementById('bon-vente-content').innerHTML = `
+    <div style="padding:1rem;background:var(--sable);border-radius:10px;font-size:0.85rem;line-height:1.7">
+      <div style="font-size:1rem;font-weight:700;color:var(--vert);margin-bottom:0.5rem">PoultryEvo — Bon de Vente</div>
+      <div><strong>Date :</strong> ${vente.date}</div>
+      <div><strong>Lot vendu :</strong> ${code_lot}</div>
+      <div><strong>Acheteur :</strong> ${vente.acheteur || '—'}</div>
+      <hr style="border-color:rgba(0,0,0,0.08);margin:0.6rem 0">
+      <div><strong>Nombre de sujets :</strong> ${vente.nb}</div>
+      <div><strong>Poids total :</strong> ${vente.poidsTotal} kg (moy. ${poidsUnitMoyen} kg/sujet)</div>
+      <div><strong>Prix unitaire :</strong> ${fmt(vente.prixKg)} FCFA/kg</div>
+      <div style="font-size:1rem;font-weight:700;color:var(--or);margin-top:0.4rem">Montant total : ${fmt(vente.montantTotal)} FCFA</div>
+      <hr style="border-color:rgba(0,0,0,0.08);margin:0.6rem 0">
+      <div style="font-size:0.78rem;color:var(--gris)"><strong>🔗 Traçabilité complète :</strong><br>${chaineHTML || code_lot}</div>
+    </div>`;
+  openModal('m-bon-vente');
+}
+
+function renderEngraissementTable(){
+  const tbody = document.getElementById('engraissement-lots-table');
+  if(!tbody) return;
+  const lotsEngr = lots.filter(l => l.type_lot === 'Engraissement').slice().reverse();
+
+  if(!lotsEngr.length){
+    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--gris);padding:1rem">Aucun lot en cours. Cliquez sur "+ Réception Lot" pour commencer.</td></tr>';
+  } else {
+    tbody.innerHTML = lotsEngr.map(l=>{
+      const mvts = mouvements.filter(m=>m.code_lot===l.code_lot);
+      const pesees_l = mvts.filter(m=>m.type_mouvement==='Pesée');
+      const derniere = pesees_l.length ? pesees_l[pesees_l.length-1] : null;
+      const age = ageEnJours(l.date_creation);
+      const cible = poidsCibleAJour(age);
+      const ecart = derniere && cible ? ((derniere.valeur-cible)/cible*100) : null;
+      const ecartHTML = ecart===null ? '<span style="color:var(--gris)">—</span>' :
+        `<span style="color:${Math.abs(ecart)>10?'var(--rouge)':'var(--vert)'};font-weight:600">${ecart>=0?'+':''}${ecart.toFixed(0)}%</span>`;
+      const origineLabel = l.code_lot_parent ? `🔗 ${l.code_lot_parent}` : `🚚 ${l.origine}`;
+      const statutBadge = l.statut==='Vendu' ? '<span class="badge b-g">✓ Vendu</span>' :
+        l.statut==='Clôturé' ? '<span class="badge b-gr">Clôturé</span>' : '<span class="badge b-o">🍗 En cours</span>';
+      const actions = l.statut==='En cours' ? `
+        <button class="btn btn-o" style="padding:0.3rem 0.5rem;font-size:0.68rem" onclick="document.getElementById('eq-lot').value='${l.code_lot}';remplirSelectsEngraissement();document.getElementById('eq-lot').value='${l.code_lot}';openModal('m-engr-quotidien')">Contrôle</button>
+        <button class="btn btn-o" style="padding:0.3rem 0.5rem;font-size:0.68rem" onclick="document.getElementById('ep-lot').value='${l.code_lot}';remplirSelectsEngraissement();document.getElementById('ep-lot').value='${l.code_lot}';openModal('m-engr-pesee')">Pesée</button>
+        <button class="btn btn-p" style="padding:0.3rem 0.5rem;font-size:0.68rem" onclick="remplirSelectsEngraissement();document.getElementById('ev-lot').value='${l.code_lot}';openModal('m-engr-vente')">Vendre</button>
+      ` : '';
+      return `<tr>
+        <td style="font-family:'JetBrains Mono',monospace;font-weight:600;font-size:0.76rem">${l.code_lot}</td>
+        <td style="font-size:0.76rem">${origineLabel}</td>
+        <td style="font-size:0.78rem">${l.date_creation}</td>
+        <td style="font-weight:700">${l.effectif_actuel}</td>
+        <td>${age}j</td>
+        <td>${derniere ? derniere.valeur+'g' : '—'}</td>
+        <td>${ecartHTML}</td>
+        <td>${statutBadge}</td>
+        <td style="display:flex;gap:0.25rem;flex-wrap:wrap">${actions}</td>
+      </tr>`;
+    }).join('');
+  }
+
+  // Stats globales
+  const lotsActifs = lots.filter(l=>l.type_lot==='Engraissement' && l.statut==='En cours');
+  document.getElementById('engr-lots-actifs').textContent = lotsActifs.length;
+  document.getElementById('engr-effectif-total').textContent = fmt(lotsActifs.reduce((s,l)=>s+l.effectif_actuel,0));
+  const totalVendus = lots.filter(l=>l.type_lot==='Engraissement').reduce((s,l)=>s+(l.ventes||[]).reduce((s2,v)=>s2+v.nb,0),0);
+  document.getElementById('engr-ventes-total').textContent = fmt(totalVendus);
+
+  // Poids moyen actuel (dernière pesée tous lots actifs confondus)
+  const dernieresPesees = lotsActifs.map(l=>{
+    const p = mouvements.filter(m=>m.code_lot===l.code_lot && m.type_mouvement==='Pesée');
+    return p.length ? p[p.length-1].valeur : null;
+  }).filter(v=>v!==null);
+  document.getElementById('engr-poids-moyen').textContent = dernieresPesees.length
+    ? Math.round(dernieresPesees.reduce((a,b)=>a+b,0)/dernieresPesees.length)+'g'
+    : '—';
+
+  renderVentesEngraissementList();
+  remplirSelectsEngraissement();
+}
+
+function renderVentesEngraissementList(){
+  const el = document.getElementById('ventes-engraissement-list');
+  if(!el) return;
+  const toutesVentes = [];
+  lots.filter(l=>l.type_lot==='Engraissement' && l.ventes).forEach(l=>{
+    l.ventes.forEach(v=>toutesVentes.push({...v, code_lot:l.code_lot}));
+  });
+  toutesVentes.sort((a,b)=>b.date.localeCompare(a.date));
+  if(!toutesVentes.length){
+    el.innerHTML = '<div style="color:var(--gris);font-size:0.82rem;padding:1rem;text-align:center">Aucune vente enregistrée pour le moment.</div>';
+  } else {
+    el.innerHTML = toutesVentes.map(v=>`
+      <div style="padding:0.65rem;background:var(--sable);border-radius:8px;margin-bottom:0.4rem;display:flex;justify-content:space-between;font-size:0.82rem">
+        <div><strong>${v.code_lot}</strong> — ${v.nb} sujets<div style="font-size:0.72rem;color:var(--gris)">${v.date} · ${v.acheteur||'—'}</div></div>
+        <span style="font-weight:700;color:var(--vert)">${fmt(v.montantTotal)} FCFA</span>
+      </div>
+    `).join('');
+  }
+  renderVentesConsolide();
+}
+
+// ════════════════════════════════════════════════════════════
+// ===== MODULE VENTES / FINANCIER CONSOLIDÉ =====
+// ════════════════════════════════════════════════════════════
+const COUT_ALIMENT_FCFA_KG = 350; // Estimation indicative — ajuster selon coût réel de la formule utilisée
+
+function collecterToutesVentes(){
+  const toutes = [];
+  lots.forEach(l=>{
+    (l.ventes||[]).forEach(v=>toutes.push({...v, code_lot:l.code_lot, module:l.type_lot}));
+  });
+  return toutes.sort((a,b)=>b.date.localeCompare(a.date));
+}
+
+function renderVentesConsolide(){
+  const tbody = document.getElementById('ventes-consolide-table');
+  if(!tbody) return;
+  const toutesVentes = collecterToutesVentes();
+
+  if(!toutesVentes.length){
+    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--gris);padding:1rem">Aucune vente enregistrée pour le moment.</td></tr>';
+  } else {
+    tbody.innerHTML = toutesVentes.map(v=>{
+      const chaine = remonterChaine(v.code_lot);
+      const chaineTxt = chaine.map(l=>l.code_lot).join(' ← ');
+      const prixKg = v.prixKg || (v.poidsTotal ? Math.round(v.montantTotal/v.poidsTotal) : 0);
+      return `<tr style="cursor:pointer" onclick="document.getElementById('recherche-lot-input').value='${v.code_lot}';rechercherLot();document.getElementById('recherche-lot-input').scrollIntoView({behavior:'smooth'})">
+        <td style="font-size:0.78rem">${v.date}</td>
+        <td style="font-family:'JetBrains Mono',monospace;font-weight:600;font-size:0.76rem">${v.code_lot}</td>
+        <td><span class="badge b-o">${v.module}</span></td>
+        <td>${v.nb}</td>
+        <td>${v.poidsTotal||'—'}</td>
+        <td>${fmt(prixKg)}</td>
+        <td style="font-weight:700;color:var(--vert)">${fmt(v.montantTotal)}</td>
+        <td style="font-size:0.78rem">${v.acheteur||'—'}</td>
+        <td style="font-size:0.7rem;color:var(--gris)">${chaineTxt}</td>
+      </tr>`;
+    }).join('');
+  }
+
+  // Stats globales
+  const revenuTotal = toutesVentes.reduce((s,v)=>s+v.montantTotal,0);
+  const sujetsTotal = toutesVentes.reduce((s,v)=>s+v.nb,0);
+  const poidsTotal = toutesVentes.reduce((s,v)=>s+(v.poidsTotal||0),0);
+  document.getElementById('vt-revenu-total').textContent = fmt(revenuTotal);
+  document.getElementById('vt-sujets-vendus').textContent = fmt(sujetsTotal);
+  document.getElementById('vt-poids-total').textContent = fmt(poidsTotal);
+  document.getElementById('vt-prix-moyen').textContent = poidsTotal ? fmt(Math.round(revenuTotal/poidsTotal)) : '—';
+
+  renderRentabiliteTable();
+}
+
+function renderRentabiliteTable(){
+  const tbody = document.getElementById('rentabilite-table');
+  if(!tbody) return;
+  const lotsEngr = lots.filter(l=>l.type_lot==='Engraissement');
+
+  if(!lotsEngr.length){
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--gris);padding:1rem">Aucune donnée disponible pour le moment.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = lotsEngr.map(l=>{
+    const mvts = mouvements.filter(m=>m.code_lot===l.code_lot);
+    const mortalite = mvts.filter(m=>m.type_mouvement==='Mortalité').reduce((s,m)=>s+m.valeur,0);
+    const alimentTotal = mvts.filter(m=>m.type_mouvement==='Alimentation').reduce((s,m)=>s+m.valeur,0);
+    const ventes_l = l.ventes || [];
+    const poidsVendu = ventes_l.reduce((s,v)=>s+(v.poidsTotal||0),0);
+    const revenu = ventes_l.reduce((s,v)=>s+v.montantTotal,0);
+    const coutAliment = alimentTotal * COUT_ALIMENT_FCFA_KG;
+    const marge = revenu - coutAliment;
+    const margeColor = marge >= 0 ? 'var(--vert)' : 'var(--rouge)';
+    return `<tr>
+      <td style="font-family:'JetBrains Mono',monospace;font-weight:600;font-size:0.76rem">${l.code_lot}</td>
+      <td>${l.effectif_initial}</td>
+      <td style="color:${mortalite>0?'var(--rouge)':'inherit'}">${mortalite}</td>
+      <td>${alimentTotal.toFixed(0)}</td>
+      <td>${poidsVendu || '—'}</td>
+      <td>${revenu ? fmt(revenu) : '—'}</td>
+      <td style="font-weight:700;color:${margeColor}">${revenu ? (marge>=0?'+':'')+fmt(marge) : '—'}</td>
+    </tr>`;
+  }).join('');
+}
+
+function genererHTMLFicheLot(code){
+  const lot = lots.find(l=>l.code_lot.toLowerCase() === code.toLowerCase());
+  if(!lot){
+    return `<div style="color:var(--gris);font-size:0.82rem;padding:0.8rem">Aucun lot trouvé pour "${code}".</div>`;
+  }
+
+  const chaineParents = remonterChaine(lot.code_lot);
+  const enfants = trouverEnfants(lot.code_lot);
+  const mvts = mouvements.filter(m=>m.code_lot===lot.code_lot).sort((a,b)=>a.date.localeCompare(b.date));
+
+  return `
+    <div style="padding:0.9rem;background:var(--sable);border-radius:10px;font-size:0.84rem">
+      <div style="font-weight:700;color:var(--vert);margin-bottom:0.4rem">${lot.code_lot} <span class="badge b-o" style="margin-left:0.4rem">${lot.type_lot}</span> <span class="badge ${lot.statut==='Terminé'||lot.statut==='Vendu'?'b-g':'b-o'}" style="margin-left:0.2rem">${lot.statut}</span></div>
+      <div style="font-size:0.78rem;color:var(--gris);margin-bottom:0.5rem">Origine : ${lot.origine} · Créé le ${lot.date_creation} · Effectif initial : ${lot.effectif_initial} · Effectif actuel : ${lot.effectif_actuel}</div>
+
+      <div style="margin:0.6rem 0"><strong style="font-size:0.78rem">🔗 Chaîne de traçabilité (remontée) :</strong><br>
+        ${chaineParents.map(l=>`<span class="badge b-bl" style="margin:0.15rem">${l.code_lot}</span>`).join(' ← ') || '—'}
+      </div>
+
+      ${enfants.length ? `<div style="margin:0.6rem 0"><strong style="font-size:0.78rem">↳ Lot(s) enfant(s) :</strong><br>
+        ${enfants.map(e=>`<span class="badge b-g" style="margin:0.15rem">${e.code_lot}</span>`).join(' ')}
+      </div>` : ''}
+
+      <div style="margin-top:0.7rem"><strong style="font-size:0.78rem">📋 Historique des mouvements (${mvts.length}) :</strong></div>
+      <div style="max-height:200px;overflow-y:auto;margin-top:0.3rem">
+        ${mvts.map(m=>`<div style="padding:0.4rem 0;border-bottom:1px solid rgba(0,0,0,0.06);font-size:0.76rem;display:flex;justify-content:space-between">
+          <span>${m.date} — ${m.type_mouvement}</span><span style="font-weight:600">${m.valeur}</span>
+        </div>`).join('') || '<div style="color:var(--gris);font-size:0.76rem">Aucun mouvement enregistré.</div>'}
+      </div>
+    </div>`;
+}
+
+function rechercherLot(){
+  const code = document.getElementById('recherche-lot-input').value.trim();
+  const resultEl = document.getElementById('recherche-lot-resultat');
+  if(!code){ resultEl.innerHTML=''; return; }
+  resultEl.innerHTML = genererHTMLFicheLot(code);
+}
+
+function rechercherLotDashboard(){
+  const code = document.getElementById('recherche-lot-dashboard').value.trim();
+  const resultEl = document.getElementById('recherche-lot-dashboard-resultat');
+  if(!code){ resultEl.innerHTML=''; return; }
+  resultEl.innerHTML = genererHTMLFicheLot(code);
+}
+
+// ════════════════════════════════════════════════════════════
+// ===== TABLEAU DE BORD GLOBAL (vue admin multi-modules) =====
+// ════════════════════════════════════════════════════════════
+
+function statutCouleur(niveau){
+  // niveau: 'ok' | 'attention' | 'critique'
+  return {ok:'var(--vert)', attention:'var(--or)', critique:'var(--rouge)'}[niveau] || 'var(--gris)';
+}
+
+function evaluerKPIModule(module){
+  // Retourne {niveau, libelle, detail} selon les KPI propres à chaque module
+  if(module === 'Troupeau'){
+    const lot = lots.find(l=>l.code_lot===CODE_LOT_TROUPEAU_HEP2026);
+    if(!lot) return {niveau:'attention', libelle:'—', detail:'Lot non initialisé'};
+    const tauxMortalite = lot.effectif_initial ? ((lot.effectif_initial-lot.effectif_actuel)/lot.effectif_initial*100) : 0;
+    const niveau = tauxMortalite < 3 ? 'ok' : tauxMortalite < 6 ? 'attention' : 'critique';
+    return {niveau, libelle:lot.effectif_actuel+' sujets', detail:'Mortalité cumulée : '+tauxMortalite.toFixed(1)+'%'};
+  }
+  if(module === 'Couvoir'){
+    const lotsTermines = lots.filter(l=>l.type_lot==='Œufs' && l.statut==='Terminé' && l.nb_poussins!==undefined);
+    const lotsActifs = lots.filter(l=>l.type_lot==='Œufs' && l.statut!=='Terminé');
+    if(!lotsTermines.length && !lotsActifs.length) return {niveau:'attention', libelle:'Aucune donnée', detail:'Aucun lot enregistré'};
+    const tauxMoyen = lotsTermines.length ? lotsTermines.reduce((s,l)=>s+(l.nb_poussins/l.effectif_initial*100),0)/lotsTermines.length : null;
+    const niveau = tauxMoyen===null ? 'attention' : tauxMoyen>=85 ? 'ok' : tauxMoyen>=70 ? 'attention' : 'critique';
+    return {niveau, libelle:lotsActifs.length+' lot(s) actif(s)', detail: tauxMoyen!==null ? 'Éclosion moy. : '+tauxMoyen.toFixed(1)+'%' : 'Aucune éclosion encore'};
+  }
+  if(module === 'Engraissement'){
+    const lotsActifs = lots.filter(l=>l.type_lot==='Engraissement' && l.statut==='En cours');
+    if(!lotsActifs.length) return {niveau:'attention', libelle:'Aucun lot actif', detail:'—'};
+    // Vérifier l'écart moyen à la trajectoire pour les lots actifs ayant une pesée
+    const ecarts = lotsActifs.map(l=>{
+      const p = mouvements.filter(m=>m.code_lot===l.code_lot && m.type_mouvement==='Pesée');
+      if(!p.length) return null;
+      const derniere = p[p.length-1];
+      const age = ageEnJours(l.date_creation);
+      const cible = poidsCibleAJour(age);
+      return cible ? (derniere.valeur-cible)/cible*100 : null;
+    }).filter(e=>e!==null);
+    if(!ecarts.length) return {niveau:'attention', libelle:lotsActifs.length+' lot(s) actif(s)', detail:'Aucune pesée encore'};
+    const ecartMoyen = ecarts.reduce((a,b)=>a+b,0)/ecarts.length;
+    const niveau = Math.abs(ecartMoyen)<=5 ? 'ok' : Math.abs(ecartMoyen)<=10 ? 'attention' : 'critique';
+    return {niveau, libelle:lotsActifs.length+' lot(s) actif(s)', detail:'Écart trajectoire : '+(ecartMoyen>=0?'+':'')+ecartMoyen.toFixed(0)+'%'};
+  }
+  if(module === 'Ventes'){
+    const toutesVentes = collecterToutesVentes();
+    if(!toutesVentes.length) return {niveau:'attention', libelle:'Aucune vente', detail:'—'};
+    const revenuTotal = toutesVentes.reduce((s,v)=>s+v.montantTotal,0);
+    const ventesRecentes = toutesVentes.filter(v=>{
+      const j = (new Date() - new Date(v.date)) / 86400000;
+      return j <= 30;
+    });
+    const niveau = ventesRecentes.length ? 'ok' : 'attention';
+    return {niveau, libelle:fmt(revenuTotal)+' FCFA', detail:ventesRecentes.length+' vente(s) sur 30j'};
+  }
+  return {niveau:'attention', libelle:'—', detail:'—'};
+}
+
+function renderVueGlobale(){
+  const el = document.getElementById('vue-globale-blocs');
+  if(!el) return;
+  const modules = [
+    {nom:'Troupeau', icone:'🐔', kpi:evaluerKPIModule('Troupeau')},
+    {nom:'Couvoir', icone:'🔆', kpi:evaluerKPIModule('Couvoir')},
+    {nom:'Engraissement', icone:'🍗', kpi:evaluerKPIModule('Engraissement')},
+    {nom:'Ventes', icone:'🧾', kpi:evaluerKPIModule('Ventes')},
+  ];
+  el.innerHTML = modules.map(m=>`
+    <div class="stat" style="border-left:4px solid ${statutCouleur(m.kpi.niveau)}">
+      <div class="stat-icon">${m.icone}</div>
+      <div class="stat-val" style="font-size:1.1rem">${m.kpi.libelle}</div>
+      <div class="stat-lbl">${m.nom}</div>
+      <div class="stat-trend" style="color:${statutCouleur(m.kpi.niveau)}">${m.kpi.detail}</div>
+    </div>
+  `).join('');
+}
+
+function collecterAlertesGlobales(){
+  const alertes = [];
+
+  // Troupeau : mortalité cumulée élevée
+  const kTroupeau = evaluerKPIModule('Troupeau');
+  if(kTroupeau.niveau !== 'ok'){
+    alertes.push({urgence: kTroupeau.niveau==='critique'?3:2, module:'Troupeau', lot:CODE_LOT_TROUPEAU_HEP2026, texte: 'Mortalité élevée — '+kTroupeau.detail});
+  }
+
+  // Couvoir : lots actifs depuis longtemps sans éclosion (>25 jours = anomalie, incubation = 21j)
+  lots.filter(l=>l.type_lot==='Œufs' && l.statut!=='Terminé').forEach(l=>{
+    const age = ageEnJours(l.date_creation);
+    if(age > 25){
+      alertes.push({urgence:2, module:'Couvoir', lot:l.code_lot, texte:`Lot en incubation depuis ${age}j — vérifier (normal : 21j)`});
+    }
+  });
+
+  // Engraissement : écarts de trajectoire significatifs par lot
+  lots.filter(l=>l.type_lot==='Engraissement' && l.statut==='En cours').forEach(l=>{
+    const p = mouvements.filter(m=>m.code_lot===l.code_lot && m.type_mouvement==='Pesée');
+    if(!p.length) return;
+    const derniere = p[p.length-1];
+    const age = ageEnJours(l.date_creation);
+    const cible = poidsCibleAJour(age);
+    const ecart = cible ? (derniere.valeur-cible)/cible*100 : 0;
+    if(Math.abs(ecart) > 10){
+      alertes.push({urgence: Math.abs(ecart)>20?3:2, module:'Engraissement', lot:l.code_lot, texte:`Écart trajectoire ${ecart>=0?'+':''}${ecart.toFixed(0)}% (J${age})`});
+    }
+  });
+
+  // Mortalité élevée sur un lot d'engraissement
+  lots.filter(l=>l.type_lot==='Engraissement' && l.statut==='En cours').forEach(l=>{
+    const tauxMort = l.effectif_initial ? ((l.effectif_initial-l.effectif_actuel)/l.effectif_initial*100) : 0;
+    if(tauxMort > 5){
+      alertes.push({urgence: tauxMort>10?3:2, module:'Engraissement', lot:l.code_lot, texte:`Mortalité cumulée ${tauxMort.toFixed(1)}%`});
+    }
+  });
+
+  return alertes.sort((a,b)=>b.urgence-a.urgence);
+}
+
+function renderAlertesGlobales(){
+  const el = document.getElementById('alertes-globales-list');
+  if(!el) return;
+  const alertes = collecterAlertesGlobales();
+  if(!alertes.length){
+    el.innerHTML = '<div style="color:var(--vert);font-size:0.84rem;padding:1rem;text-align:center">✓ Aucune alerte active — tout est sous contrôle.</div>';
+    return;
+  }
+  el.innerHTML = alertes.map(a=>{
+    const badgeClass = a.urgence===3 ? 'b-r' : 'b-o';
+    return `<div style="padding:0.6rem;background:var(--sable);border-radius:8px;margin-bottom:0.4rem;display:flex;justify-content:space-between;align-items:center;font-size:0.8rem;cursor:pointer" onclick="document.getElementById('recherche-lot-dashboard').value='${a.lot}';rechercherLotDashboard();document.getElementById('recherche-lot-dashboard').scrollIntoView({behavior:'smooth'})">
+      <div><span class="badge ${badgeClass}">${a.module}</span> <span style="font-family:'JetBrains Mono',monospace;font-size:0.74rem;margin-left:0.3rem">${a.lot}</span><div style="font-size:0.78rem;margin-top:0.2rem">${a.texte}</div></div>
+    </div>`;
+  }).join('');
+}
+
+function renderRentabiliteGlobale(){
+  const el = document.getElementById('rentabilite-globale-resume');
+  if(!el) return;
+  const toutesVentes = collecterToutesVentes();
+  const revenuTotal = toutesVentes.reduce((s,v)=>s+v.montantTotal,0);
+
+  const coutAnimaux = finances.filter(f=>f.cat==='Animaux' && f.type==='Dépense').reduce((s,f)=>s+f.montant,0);
+  const coutAlimentTotal = mouvements.filter(m=>m.type_mouvement==='Alimentation').reduce((s,m)=>s+m.valeur,0) * COUT_ALIMENT_FCFA_KG;
+  const autresDepenses = finances.filter(f=>f.type==='Dépense' && f.cat!=='Animaux').reduce((s,f)=>s+f.montant,0);
+  const coutTotal = coutAnimaux + coutAlimentTotal + autresDepenses;
+  const marge = revenuTotal - coutTotal;
+  const margeColor = marge>=0 ? 'var(--vert)' : 'var(--rouge)';
+
+  el.innerHTML = `
+    <div style="display:grid;gap:0.6rem;font-size:0.82rem">
+      <div style="padding:0.7rem;background:rgba(45,106,79,0.07);border-radius:9px;display:flex;justify-content:space-between"><span>Revenu Total (ventes)</span><span style="font-weight:700;color:var(--vert)">+${fmt(revenuTotal)}</span></div>
+      <div style="padding:0.7rem;background:rgba(181,50,42,0.07);border-radius:9px;display:flex;justify-content:space-between"><span>Coût Total (animaux + aliment + autres)</span><span style="font-weight:700;color:var(--rouge)">−${fmt(coutTotal)}</span></div>
+      <div style="padding:0.7rem;background:rgba(200,146,42,0.12);border-radius:9px;border:1.5px solid var(--or);display:flex;justify-content:space-between"><span style="font-weight:600">Marge Globale Estimée</span><span style="font-weight:800;color:${margeColor}">${marge>=0?'+':''}${fmt(marge)} FCFA</span></div>
+      <div style="font-size:0.68rem;color:var(--gris)">Coût aliment estimé à ${COUT_ALIMENT_FCFA_KG} FCFA/kg — recalculé automatiquement à chaque mouvement enregistré.</div>
+    </div>`;
+}
+
+function renderTableauBordGlobal(){
+  renderVueGlobale();
+  renderAlertesGlobales();
+  renderRentabiliteGlobale();
+}
+
+function addVaccin(){
+  const date=document.getElementById('v-date').value;
+  const prod=document.getElementById('v-prod').value;
+  const mal=document.getElementById('v-maladie').value;
+  const voie=document.getElementById('v-voie').value;
+  const obs=document.getElementById('v-obs').value;
+  vaccinLog.push({date,prod,mal,voie,obs});
+  sauvegarderDonnees();
+  // Marquer dans programme
+  const v=VACCINS.find(x=>x.maladie.includes(mal.split(' ')[0]));
+  if(v){v.fait=true;v.date=date;}
+  renderVaccinTable();
+  closeModal('m-vaccin');
+  showToast(`💉 Vaccination ${mal} enregistrée !`);
+  renderSanteTimeline();
+}
+
+function addSante(){
+  const date=document.getElementById('s-date').value;
+  const type=document.getElementById('s-type').value;
+  const prod=document.getElementById('s-prod').value;
+  const obs=document.getElementById('s-obs').value;
+  santeLog.push({date,type,prod,obs});
+  sauvegarderDonnees();
+  closeModal('m-sante');
+  showToast(`🏥 Acte sanitaire enregistré !`);
+  renderSanteTimeline();
+}
+
+function renderSanteTimeline(){
+  const tl=document.getElementById('sante-timeline');
+  if(!tl) return;
+  const items=[
+    ...vaccinLog.map(v=>({date:v.date, titre:`Vaccination ${v.mal}`, note:`${v.prod} · ${v.voie}. ${v.obs||''}`})),
+    ...santeLog.map(s=>({date:s.date, titre:s.type, note:`${s.prod}. ${s.obs||''}`})),
+  ].sort((a,b)=>b.date.localeCompare(a.date));
+  tl.innerHTML=items.map(i=>`<div class="tl-item"><div class="tl-date">${i.date}</div><div class="tl-text">${i.titre}</div><div class="tl-note">${i.note}</div></div>`).join('');
+}
+
+function addMort(){
+  const date=document.getElementById('mo-date').value;
+  const sexe=document.getElementById('mo-sexe').value;
+  const nb=parseInt(document.getElementById('mo-nb').value)||0;
+  const cause=document.getElementById('mo-cause').value;
+  const action=document.getElementById('mo-action').value;
+  mortalite.push({date,sexe,nb,cause,action});
+  effectifActuel-=nb;
+  // Connexion discrète au système Lot/Mouvement (n'affecte pas l'écran existant)
+  enregistrerMouvement({code_lot:CODE_LOT_TROUPEAU_HEP2026, module:'Troupeau', type_mouvement:'Mortalité', date, valeur:nb, collaborateur:cause, impact_effectif:-nb});
+  sauvegarderDonnees();
+  closeModal('m-mort');
+  showToast(`⚠️ ${nb} perte(s) enregistrée(s)`);
+  renderMortTable();
+}
+function renderMortTable(){
+  const total=mortalite.reduce((s,m)=>s+m.nb,0);
+  const taux=((total/TOTAL_INIT)*100).toFixed(2);
+  document.getElementById('mort-total').textContent=total;
+  document.getElementById('mort-taux').textContent=taux+'%';
+  document.getElementById('mort-effectif').textContent=fmt(effectifActuel);
+  const semMort=mortalite.filter(m=>m.date>=new Date(Date.now()-7*86400000).toISOString().split('T')[0]).reduce((s,m)=>s+m.nb,0);
+  document.getElementById('mort-semaine').textContent=semMort;
+  document.getElementById('mort-table-wrap').innerHTML=`<div class="table-wrap"><table>
+    <thead><tr><th>Date</th><th>Sexe</th><th>Nb</th><th>Cause</th><th>Action</th></tr></thead>
+    <tbody>${mortalite.slice().reverse().map(m=>`<tr><td style="font-family:'JetBrains Mono',monospace;font-size:0.75rem">${m.date}</td><td>${m.sexe}</td><td style="font-weight:700;color:var(--rouge)">${m.nb}</td><td><span class="badge b-o">${m.cause}</span></td><td style="font-size:0.78rem;color:var(--gris)">${m.action}</td></tr>`).join('')}
+    </tbody></table></div>`;
+}
+
+function addFinance(){
+  const date=document.getElementById('f-date').value;
+  const type=document.getElementById('f-type').value;
+  const desc=document.getElementById('f-desc').value;
+  const montant=parseFloat(document.getElementById('f-mont').value)||0;
+  const cat=document.getElementById('f-cat').value;
+  finances.push({date,type,desc,montant,cat});
+  sauvegarderDonnees();
+  closeModal('m-finance');
+  showToast(`💰 Transaction enregistrée : ${type} ${fmt(montant)} FCFA`);
+  renderFinanceList();
+}
+function renderFinanceList(){
+  const rec=finances.filter(f=>f.type==='Recette').reduce((s,f)=>s+f.montant,0);
+  const dep=finances.filter(f=>f.type==='Dépense').reduce((s,f)=>s+f.montant,0);
+  const solde=rec-dep;
+  document.getElementById('fin-recettes').textContent=fmt(rec);
+  document.getElementById('fin-depenses').textContent=fmt(dep);
+  document.getElementById('fin-solde').textContent=(solde>=0?'+':'')+fmt(solde);
+  document.getElementById('fin-solde').style.color=solde>=0?'var(--vert)':'var(--rouge)';
+  document.getElementById('fin-list').innerHTML=finances.slice().reverse().map(f=>`
+    <div style="background:${f.type==='Recette'?'rgba(45,106,79,0.07)':'rgba(181,50,42,0.07)'};border-radius:9px;padding:0.65rem;display:flex;justify-content:space-between;font-size:0.82rem;margin-bottom:0.4rem">
+      <div><div style="font-weight:600">${f.desc}</div><div style="font-size:0.72rem;color:var(--gris)">${f.date} · ${f.cat}</div></div>
+      <span style="font-weight:700;color:${f.type==='Recette'?'var(--vert)':'var(--rouge)'}">${f.type==='Recette'?'+':'-'}${fmt(f.montant)}</span>
+    </div>
+  `).join('');
+}
+
+// ===== INIT =====
+async function initApp(){
+  updateSidebar();
+  setInterval(updateSidebar,60000);
+  // Le chargement des données et l'affichage de l'app se déclenchent dans démarrerApresConnexion(),
+  // appelée par onAuthStateChanged une fois l'utilisateur authentifié.
+  document.querySelectorAll('input[type=date]').forEach(el=>{if(!el.value)el.value=today();});
+}
+
+async function demarrerApresConnexion(){
+  await chargerDonnees();
+  assurerLotTroupeauHEP2026();
+  renderPoidsTable();
+  renderPeseesList();
+  renderVaccinTable();
+  renderOeufsList();
+  renderCouvoirTable();
+  renderEngraissementTable();
+  renderVentesConsolide();
+  renderTableauBordGlobal();
+  remplirOptionsOrigine();
+  renderSanteTimeline();
+  renderMortTable();
+  renderFinanceList();
+  document.querySelectorAll('input[type=date]').forEach(el=>{if(!el.value)el.value=today();});
+}
+initApp();
+
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Enter' && !document.getElementById('login-screen').classList.contains('hidden')){
+    validerConnexion();
+  }
+});
+</script>
+</body>
+</html>

@@ -1275,6 +1275,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const fbAuth = firebase.auth();
 const fbDB = firebase.database();
+fbDB.setPersistenceEnabled(true);
 fbDB.goOnline();
 
 // ===== DONNÉES =====
@@ -2781,10 +2782,10 @@ async function demarrerApresConnexion(){
   renderSanteTimeline();
   renderMortTable();
   renderFinanceList();
-  document.querySelectorAll('input[type=date]').forEach(el=>{if(!el.value)el.value=today();});
-}
-firebase.database().setPersistenceEnabled(true);
-initApp();
+   }
+  initApp();
+  
+
 
 document.addEventListener('keydown', function(e){
   if(e.key === 'Enter' && !document.getElementById('login-screen').classList.contains('hidden')){

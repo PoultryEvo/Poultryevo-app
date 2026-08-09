@@ -2783,6 +2783,7 @@ async function demarrerApresConnexion(){
   renderFinanceList();
   document.querySelectorAll('input[type=date]').forEach(el=>{if(!el.value)el.value=today();});
 }
+firebase.database().setPersistenceEnabled(true);
 initApp();
 
 document.addEventListener('keydown', function(e){
